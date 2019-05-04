@@ -1,12 +1,12 @@
 from datetime import datetime as dt
 
+from constant import METRICS_NETWORK_ID
 from repository import Repository
 
 
 class Metrics:
-    def __init__(self, net_id):
-        self.net_id = net_id
-        self.repo = Repository(net_id)
+    def __init__(self):
+        self.repo = Repository(METRICS_NETWORK_ID)
 
     def handle_request_type(self, params):
         try:
@@ -15,10 +15,10 @@ class Metrics:
                               "service_method, row_created, row_updated) " \
                               "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             dm_req_params = (params['ethereum_json_rpc_endpoint'], params['group_id'], params['input_data_size'],
-                       params['organization_id'], params['registry_address_key'], params['request_id'],
-                       params['request_received_time'][:19], params['service_id'], params['service_method'],
-                       dt.utcnow(),
-                       dt.utcnow())
+                             params['organization_id'], params['registry_address_key'], params['request_id'],
+                             params['request_received_time'][:19], params['service_id'], params['service_method'],
+                             dt.utcnow(),
+                             dt.utcnow())
             self.repo.execute(insrt_dm_rq_sts, dm_req_params)
         except Exception as e:
             print(repr(e))
@@ -32,7 +32,8 @@ class Metrics:
                               "VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             dm_rs_params = (params['error_message'], params['ethereum_json_rpc_endpoint'], params['group_id'],
                             params['organization_id'], params['registry_address_key'], params['request_id'],
-                            params['request_received_time'][:19], params['response_code'], params['response_sent_time'][:19],
+                            params['request_received_time'][:19], params['response_code'],
+                            params['response_sent_time'][:19],
                             params['response_time'], params['service_id'], params['service_method'], dt.utcnow(),
                             dt.utcnow())
             self.repo.execute(insrt_dm_rs_sts, dm_rs_params)

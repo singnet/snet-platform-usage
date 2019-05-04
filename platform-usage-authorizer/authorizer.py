@@ -1,10 +1,9 @@
 from repository import Repository
-
+from constant import METRICS_NETWORK_ID
 
 class Token:
-    def __init__(self, net_id):
-        self.net_id = net_id
-        self.repo = Repository(net_id)
+    def __init__(self):
+        self.repo = Repository(METRICS_NETWORK_ID)
 
     def validate_token(self, daemon_id, token):
         print("validate_token::daemon_id: ", daemon_id);

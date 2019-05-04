@@ -3,13 +3,13 @@ import secrets
 import time
 from datetime import datetime as dt
 
+from constant import METRICS_NETWORK_ID
 from repository import Repository
 
 
 class Token:
-    def __init__(self, net_id):
-        self.net_id = net_id
-        self.repo = Repository(net_id)
+    def __init__(self):
+        self.repo = Repository(METRICS_NETWORK_ID)
 
     def process_token(self, daemon_id):
         print("process_token::daemon_id: ", daemon_id);

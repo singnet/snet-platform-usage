@@ -2,7 +2,6 @@ import json
 import os
 
 from authorizer import Token
-from constant import METRICS_NETWORK_ID
 
 
 def request_handler(event, context):
@@ -14,11 +13,12 @@ def request_handler(event, context):
         if "/event" == path:
             payload_dict = event['headers']
             print("Processing [" + str(path) + "] with body [" + str(payload_dict) + "]")
-            net_id = METRICS_NETWORK_ID
-            token_instance = Token(net_id)
+            token_instance = Token()
             data = token_instance.validate_token(daemon_id=payload_dict['x-daemonid'],
                                                  token=payload_dict['x-token'])
             print(data)
+        else:
+            return get_response(500, "Invalid URL path.")
         response = get_lambda_authorizer_response_format(event=event, allow=data.get('validated', False))
         return response
     except Exception as e:
