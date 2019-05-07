@@ -3,13 +3,13 @@ import secrets
 import time
 from datetime import datetime as dt
 
+from constant import METRICS_NETWORK_ID
 from repository import Repository
 
 
 class Token:
-    def __init__(self, net_id):
-        self.net_id = net_id
-        self.repo = Repository(net_id)
+    def __init__(self):
+        self.repo = Repository(METRICS_NETWORK_ID)
 
     def process_token(self, daemon_id):
         print("process_token::daemon_id: ", daemon_id);
@@ -32,15 +32,6 @@ class Token:
         if len(res) > 0 and res[0] > 0:
             result["token"] = token
         return result
-
-    def validate_token(self, daemon_id, token):
-        print("validate_token::daemon_id: ", daemon_id);
-        qry = "SELECT * FROM daemon_token WHERE daemon_id = %s and token = %s "
-        res = self.repo.execute(qry, [daemon_id, token])
-        if len(res) > 0:
-            return {'validated': True}
-        return {'validated': False}
-
 
     def daemon_id_exist(self, daemon_id):
         print("daemon_id_exist::daemon_id: ", daemon_id);
