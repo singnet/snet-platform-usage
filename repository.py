@@ -1,4 +1,3 @@
-import pymysql
 from constant import NETWORKS
 
 
