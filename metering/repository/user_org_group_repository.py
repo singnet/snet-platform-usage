@@ -12,7 +12,8 @@ class UserOrgGroupRepository(BaseRepository):
             .filter(UserOrgGroupModel.org_id == org_id)
 
         if payment_group_id is not None:
-            user_org_query = user_org_query.filter(UserOrgGroupModel.payment_group_id == payment_group_id)
+            user_org_query = user_org_query.filter(
+                UserOrgGroupModel.payment_group_id == payment_group_id)
 
         user_org_group_data = user_org_query.first()
         return user_org_group_data

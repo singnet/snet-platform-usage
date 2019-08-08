@@ -19,7 +19,8 @@ def get_and_validate_requried_params(event):
 
 def main(event, context):
     org_id, service_id, user_id = get_and_validate_requried_params(event)
-    free_call_details = usage_service.get_free_call_details(user_id, org_id, service_id)
+    free_call_details = usage_service.get_free_call_details(
+        user_id, org_id, service_id)
 
     return_value = {
         "statusCode": 200,

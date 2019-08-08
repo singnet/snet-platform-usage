@@ -5,7 +5,8 @@ class UsageService(object):
     storage_service = DatabaseStorage()
 
     def get_free_call_details(self, user_name, org_id, service_id, group_id=None):
-        free_calls, total_calls = self.storage_service.get_usage_details(user_name, org_id, service_id, group_id)
+        free_calls, total_calls = self.storage_service.get_usage_details(
+            user_name, org_id, service_id, group_id)
 
         if not free_calls:
             free_calls = 0

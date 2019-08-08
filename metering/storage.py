@@ -32,7 +32,8 @@ class DatabaseStorage(Storage):
         return user_org_group_repo_data
 
     def add_usage_data(self, usage_details):
-        existing_user_org_group_repo_data = self.get_user_org_group(usage_details)
+        existing_user_org_group_repo_data = self.get_user_org_group(
+            usage_details)
 
         if existing_user_org_group_repo_data is None:
             print("existing_user_org_group_repo_data is None")
@@ -57,7 +58,10 @@ class DatabaseStorage(Storage):
         self.usage_repo.create_item(usage_record)
 
     def get_usage_details(self, user_name, org_id, service_id, group_id=None):
-        optin_time = self.usage_repo.get_optin_time(user_name, org_id, service_id)
-        free_calls = self.org_service_config_repo.get_service_config(org_id, service_id, optin_time)
-        total_calls = self.usage_repo.get_total_calls(user_name, org_id, service_id)
+        optin_time = self.usage_repo.get_optin_time(
+            user_name, org_id, service_id)
+        free_calls = self.org_service_config_repo.get_service_config(
+            org_id, service_id, optin_time)
+        total_calls = self.usage_repo.get_total_calls(
+            user_name, org_id, service_id)
         return total_calls, free_calls
