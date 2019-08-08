@@ -21,7 +21,7 @@ class UserOrgGroupModel(Base):
     __tablename__ = 'user_org_group'
     id = Column('id', Integer, primary_key=True)
     payment_group_id = Column('group', VARCHAR(225))
-    org_id = Column('org_name', VARCHAR(225), nullable=False)
+    org_id = Column('org_id', VARCHAR(225), nullable=False)
     user_name = Column('user_name', VARCHAR(225), nullable=False)
     created_at = Column('created_at', TIMESTAMP(timezone=True), nullable=False, server_default=func.current_timestamp())
     service_id = Column('service_id', VARCHAR(225), nullable=False)
