@@ -21,6 +21,7 @@ class BaseRepository(object):
     def create_item(self, item, session=None):
         session = self.get_default_session(session)
         session.add(item)
+        session.commit()
         return item
 
     def remove_item(self, item, session=None):

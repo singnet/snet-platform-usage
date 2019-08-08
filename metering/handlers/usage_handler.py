@@ -9,7 +9,7 @@ usage_service = UsageService()
 def get_and_validate_requried_params(event):
     try:
         body = json.loads(event['body'])
-        if not check_given_key('org_id'):
+        if not check_given_key('organization_id', body):
             raise Exception("Org id is compulsory parameter in body request")
     except Exception as e:
         raise e

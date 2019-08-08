@@ -7,7 +7,10 @@ class UsageRepository(BaseRepository):
 
     def get_total_calls(self, user_name, org_id, service_id):
         session = self.get_default_session()
-        query_data = session.query(func.count(UsageModel.id).label('total_calls')).join(UserOrgGroupModel).filter(UserOrgGroupModel.user_name==user_name).filter(UserOrgGroupModel.org_id==org_id).filter(UserOrgGroupModel.service_id==service_id).all()
+        query_data = session.query(func.count(UsageModel.id).label('total_calls')).join(UserOrgGroupModel) \
+            .filter(UserOrgGroupModel.user_name == user_name)\
+            .filter(UserOrgGroupModel.org_id == org_id) \
+            .filter(UserOrgGroupModel.service_id == service_id).all()
         return query_data[0].total_calls
 
     def get_optin_time(self, user_name, org_id, service_id):

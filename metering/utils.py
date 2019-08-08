@@ -21,7 +21,7 @@ def configure_log(logger):
     logger.addHandler(handler)
 
 
-def check_given_key(key,dict):
+def check_given_key(key, dict):
     if key in dict:
         return True
     return False
