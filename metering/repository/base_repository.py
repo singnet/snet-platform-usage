@@ -18,7 +18,7 @@ class BaseRepository(object):
 
         return session
 
-    def add_item(self, item, session=None):
+    def create_item(self, item, session=None):
         session = self.get_default_session(session)
         session.add(item)
         return item
