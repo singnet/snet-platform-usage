@@ -7,6 +7,7 @@ def make_response(status_code, body):
         "body": body
     }
 
+
 def configure_log(logger):
     logger.setLevel(logging.INFO)
 
