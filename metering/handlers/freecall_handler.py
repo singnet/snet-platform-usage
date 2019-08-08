@@ -8,7 +8,7 @@ usage_service = UsageService()
 
 def get_and_validate_requried_params(event):
     try:
-        org_id = event['queryStringParameters']['organisation_id']
+        org_id = event['queryStringParameters']['organization_id']
         service_id = event['queryStringParameters']['service_id']
         user_id = event['queryStringParameters']['user_id']
     except Exception as e:

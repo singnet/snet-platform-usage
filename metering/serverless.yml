@@ -1,6 +1,7 @@
 
 plugins:
   - serverless-offline
+  - serverless-python-requirements
 
 service: metering
 
@@ -19,6 +20,8 @@ provider:
   deploymentPrefix: serverless # The S3 prefix under which deployed artifacts should be stored. Default is serverless
 
 custom:
+  pythonRequirements:
+    dockerizePip: true
   stages:
     - dev
     - ropsten

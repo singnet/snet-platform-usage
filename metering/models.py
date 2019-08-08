@@ -9,7 +9,7 @@ Base = declarative_base()
 class OrgServiceConfigModel(Base):
     __tablename__ = 'service_config'
     id = Column('id', Integer, primary_key=True)
-    org_id = Column('row_id', VARCHAR(225), nullable=False)
+    org_id = Column('org_id', VARCHAR(225), nullable=False)
     service_id = Column('service_id', VARCHAR(225), nullable=False)
     free_calls = Column('free_calls', Integer, nullable=False)
     effective_start_date = Column('effective_start_date', TIMESTAMP(timezone=True))
