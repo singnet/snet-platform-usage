@@ -38,7 +38,13 @@ package:
 functions:
   get-freecalls:
     handler: handlers/freecall_handler.main
-
+    vpc:
+      securityGroupIds:
+        - ${file(./config.${self:provider.stage}.json):SG1}
+        - ${file(./config.${self:provider.stage}.json):SG2}
+      subnetIds:
+        - ${file(./config.${self:provider.stage}.json):VPC1}
+        - ${file(./config.${self:provider.stage}.json):VPC2}
     #    The following are a few example events you can configure
     #    NOTE: Please make sure to change your handler code to work with those events
     #    Check the event documentation for details
@@ -63,7 +69,13 @@ functions:
               - x-requested-with
   create-usage:
     handler: handlers.usage_handler.main
-
+    vpc:
+      securityGroupIds:
+        - ${file(./config.${self:provider.stage}.json):SG1}
+        - ${file(./config.${self:provider.stage}.json):SG2}
+      subnetIds:
+        - ${file(./config.${self:provider.stage}.json):VPC1}
+        - ${file(./config.${self:provider.stage}.json):VPC2}
     #    The following are a few example events you can configure
     #    NOTE: Please make sure to change your handler code to work with those events
     #    Check the event documentation for details
