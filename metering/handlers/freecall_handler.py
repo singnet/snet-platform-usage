@@ -10,7 +10,7 @@ def get_and_validate_requried_params(event):
     try:
         org_id = event['queryStringParameters']['organization_id']
         service_id = event['queryStringParameters']['service_id']
-        user_id = event['queryStringParameters']['user_id']
+        user_id = event['queryStringParameters']['username']
     except Exception as e:
         raise e
 
@@ -18,9 +18,9 @@ def get_and_validate_requried_params(event):
 
 
 def main(event, context):
-    org_id, service_id, user_id = get_and_validate_requried_params(event)
+    org_id, service_id, username = get_and_validate_requried_params(event)
     free_call_details = usage_service.get_free_call_details(
-        user_id, org_id, service_id)
+        username, org_id, service_id)
 
     return_value = {
         "statusCode": 200,
