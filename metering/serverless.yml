@@ -38,6 +38,7 @@ package:
 functions:
   get-freecalls:
     handler: handlers/freecall_handler.main
+    role: ${file(./config.${self:provider.stage}.json):ROLE}
     vpc:
       securityGroupIds:
         - ${file(./config.${self:provider.stage}.json):SG1}
@@ -69,6 +70,7 @@ functions:
               - x-requested-with
   create-usage:
     handler: handlers.usage_handler.main
+    role: ${file(./config.${self:provider.stage}.json):ROLE}
     vpc:
       securityGroupIds:
         - ${file(./config.${self:provider.stage}.json):SG1}
