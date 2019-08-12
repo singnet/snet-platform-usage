@@ -37,6 +37,7 @@ class UsageModel(Base):
     user_org_group_id = Column('user_org_group_id', Integer, ForeignKey(
         'user_org_group.id'), nullable=False)
     usage_type = Column('usage_type', VARCHAR(225), nullable=False)
+    status = Column('status', VARCHAR(225), nullable=False)
     usage_value = Column('usage_value', Integer, nullable=False)
     start_time = Column('start_time', TIMESTAMP(timezone=True))
     end_time = Column('end_time', TIMESTAMP(timezone=True))

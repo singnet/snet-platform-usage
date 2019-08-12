@@ -10,7 +10,8 @@ class UsageRepository(BaseRepository):
         query_data = session.query(func.count(UsageModel.id).label('total_calls')).join(UserOrgGroupModel) \
             .filter(UserOrgGroupModel.user_name == user_name)\
             .filter(UserOrgGroupModel.org_id == org_id) \
-            .filter(UserOrgGroupModel.service_id == service_id).all()
+            .filter(UserOrgGroupModel.service_id == service_id)\
+            .filter(UsageModel.status == 'success').all()
         session.commit()
         session.flush()
         return query_data[0].total_calls
