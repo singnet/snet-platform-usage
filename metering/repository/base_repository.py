@@ -22,6 +22,7 @@ class BaseRepository(object):
         session = self.get_default_session(session)
         session.add(item)
         session.commit()
+        session.flush()
         return item
 
     def remove_item(self, item, session=None):
