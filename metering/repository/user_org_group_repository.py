@@ -16,6 +16,8 @@ class UserOrgGroupRepository(BaseRepository):
                 UserOrgGroupModel.payment_group_id == payment_group_id)
 
         user_org_group_data = user_org_query.first()
+        session.commit()
+        session.flush()
         return user_org_group_data
 
     def get_free_calls(self, org_id, service_id, optin_time):

@@ -17,4 +17,6 @@ class OrgServiceRepo(BaseRepository):
                 .filter(OrgServiceConfigModel.org_id == org_id) \
                 .filter(OrgServiceConfigModel.service_id == service_id)\
                 .order_by(OrgServiceConfigModel.created_at.desc()).first()
+        session.commit()
+        session.flush()
         return service_config
