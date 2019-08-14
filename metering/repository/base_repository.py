@@ -25,6 +25,13 @@ class BaseRepository(object):
         session.flush()
         return item
 
+    def create_all_items(self, items, session=None):
+        session = self.get_default_session(session)
+        session.add_all(items)
+        session.commit()
+        session.flush()
+        return items
+
     def remove_item(self, item, session=None):
         pass
 

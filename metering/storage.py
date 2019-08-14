@@ -54,7 +54,7 @@ class DatabaseStorage(Storage):
             usage_type=usage_details['usage_type'],
             usage_value=usage_details['usage_value'],
             start_time=usage_details['start_time'],
-            end_time=usage_details['start_time']
+            end_time=usage_details['end_time']
         )
         self.usage_repo.create_item(usage_record)
 

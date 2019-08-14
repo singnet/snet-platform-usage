@@ -22,7 +22,22 @@ def configure_log(logger):
     logger.addHandler(handler)
 
 
-def check_given_key(key, dict):
-    if key in dict:
-        return True
-    return False
+def validate_usage_body(request_body):
+    required_keys = ["organization_id", "service_id", "username", 'usage_value', 'usage_type',
+                     'service_method', 'group_id', 'status', 'start_time', 'end_time']
+    for key in required_keys:
+        if key not in request_body:
+            return False
+    return True
+
+
+def validate_freecalls_request(request):
+    required_keys = ['username', 'organization_id', 'service_id']
+    for key in required_keys:
+        if key not in request:
+            return False
+    return True
+
+
+def validator_usage():
+    pass

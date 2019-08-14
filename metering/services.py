@@ -10,8 +10,6 @@ class UsageService(object):
 
         if not free_calls:
             free_calls = 0
-        else:
-            free_calls = free_calls[0]
         if not total_calls:
             total_calls = 0
 
