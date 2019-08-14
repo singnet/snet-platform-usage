@@ -15,7 +15,7 @@ class OrgServiceConfigModel(Base):
     effective_start_date = Column(
         'effective_start_date', TIMESTAMP(timezone=True))
     effective_end_date = Column('effective_end_date', TIMESTAMP(
-        timezone=True), server_default=func.current_timestamp())
+        timezone=True))
     created_at = Column('created_at', TIMESTAMP(timezone=True))
 
 
