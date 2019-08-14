@@ -5,6 +5,13 @@ class StatusCode:
     SUCCESS_GET_CODE = 200
 
 
+HEADER_POST_RESPONSE = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+}
+
+
 class StatusMessage:
     BAD_PARAMETER = "Request validation failed"
     SERVER_ERROR_MSG = "failed"

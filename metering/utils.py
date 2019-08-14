@@ -1,22 +1,10 @@
-import json
 import logging
 
 
-def make_record_usage_response(status_code, body):
+def make_response(status_code, body, header=None, ):
     return {
         "statusCode": status_code,
-        "body": body
-    }
-
-
-def make_freecalls_response(status_code, body):
-    return {
-        "statusCode": status_code,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
-        },
+        "headers": header,
         "body": body
     }
 

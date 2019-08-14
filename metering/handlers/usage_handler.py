@@ -4,7 +4,7 @@ import logging
 from constants import StatusCode, StatusMessage
 from logger import setup_logger
 from services import UsageService
-from utils import validate_request, make_record_usage_response
+from utils import validate_request, make_response
 
 usage_service = UsageService()
 
@@ -19,22 +19,22 @@ def main(event, context):
     usage_detail_dict = json.loads(event['body'])
 
     try:
-        if validate_request(usage_detail_dict):
+        if validate_request(required_keys, usage_detail_dict):
             usage_service.save_usage_details(usage_detail_dict)
-            response = make_record_usage_response(
+            response = make_response(
                 StatusCode.SUCCESS_GET_CODE,
                 json.dumps({"status": StatusMessage.SUCCESS_POST_CODE})
             )
         else:
             logger.error(f'Request validation failed {usage_detail_dict}')
-            response = make_record_usage_response(
+            response = make_response(
                 StatusCode.BAD_PARAMETERS_CODE,
                 json.dumps({"status": StatusMessage.BAD_PARAMETER})
             )
     except Exception as e:
         logger.error(e)
         logger.error(f'failed for request {usage_detail_dict}')
-        response = make_record_usage_response(
+        response = make_response(
             StatusCode.SERVER_ERROR_CODE,
             json.dumps({"status": StatusMessage.SERVER_ERROR_MSG})
         )
