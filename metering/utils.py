@@ -1,9 +1,22 @@
+import json
 import logging
 
 
-def make_response(status_code, body):
+def make_record_usage_response(status_code, body):
     return {
         "statusCode": status_code,
+        "body": body
+    }
+
+
+def make_freecalls_response(status_code, body):
+    return {
+        "statusCode": status_code,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        },
         "body": body
     }
 
@@ -22,19 +35,9 @@ def configure_log(logger):
     logger.addHandler(handler)
 
 
-def validate_usage_body(request_body):
-    required_keys = ["organization_id", "service_id", "username", 'usage_value', 'usage_type',
-                     'service_method', 'group_id', 'status', 'start_time', 'end_time']
+def validate_request(required_keys, request_body):
     for key in required_keys:
         if key not in request_body:
-            return False
-    return True
-
-
-def validate_freecalls_request(request):
-    required_keys = ['username', 'organization_id', 'service_id']
-    for key in required_keys:
-        if key not in request:
             return False
     return True
 
