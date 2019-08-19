@@ -1,9 +1,10 @@
 import logging
 
 
-def make_response(status_code, body):
+def make_response(status_code, body, header=None):
     return {
         "statusCode": status_code,
+        "headers": header,
         "body": body
     }
 
@@ -22,7 +23,12 @@ def configure_log(logger):
     logger.addHandler(handler)
 
 
-def check_given_key(key, dict):
-    if key in dict:
-        return True
-    return False
+def validate_request(required_keys, request_body):
+    for key in required_keys:
+        if key not in request_body:
+            return False
+    return True
+
+
+def validator_usage():
+    pass

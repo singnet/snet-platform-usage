@@ -24,7 +24,7 @@ class DatabaseStorage(Storage):
         user_org_group_repo_data = self.user_org_group_repo.get_user_org_group_data(
             payment_group_id=usage_details["group_id"],
             org_id=usage_details["organization_id"],
-            user_name=usage_details["user_id"],
+            user_name=usage_details["username"],
             service_id=usage_details["service_id"],
             resource=usage_details["service_method"]
         )
@@ -40,7 +40,7 @@ class DatabaseStorage(Storage):
             new_user_org_record = UserOrgGroupModel(
                 payment_group_id=usage_details["group_id"],
                 org_id=usage_details["organization_id"],
-                user_name=usage_details["user_id"],
+                user_name=usage_details["username"],
                 service_id=usage_details["service_id"],
                 resource=usage_details["service_method"]
             )
@@ -50,10 +50,11 @@ class DatabaseStorage(Storage):
         user_org_group_id = user_org_group_repo_data.id
         usage_record = UsageModel(
             user_org_group_id=user_org_group_id,
+            status=usage_details['status'],
             usage_type=usage_details['usage_type'],
             usage_value=usage_details['usage_value'],
             start_time=usage_details['start_time'],
-            end_time=usage_details['start_time']
+            end_time=usage_details['end_time']
         )
         self.usage_repo.create_item(usage_record)
 
