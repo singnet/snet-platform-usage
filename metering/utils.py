@@ -1,7 +1,7 @@
 import logging
 
 
-def make_response(status_code, body, header=None, ):
+def make_response(status_code, body, header=None):
     return {
         "statusCode": status_code,
         "headers": header,
