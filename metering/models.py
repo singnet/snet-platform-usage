@@ -14,9 +14,9 @@ class OrgServiceConfigModel(Base):
     free_calls = Column('free_calls', Integer, nullable=False)
     effective_start_date = Column(
         'effective_start_date', TIMESTAMP(timezone=True))
-    effective_end_date = Column('effective_end_date', TIMESTAMP(
+    effective_end_date = Column('effective_end_date', TIMESTAMP(timezone=True))
+    created_at = Column('created_at', TIMESTAMP(
         timezone=True), server_default=func.current_timestamp())
-    created_at = Column('created_at', TIMESTAMP(timezone=True))
 
 
 class UserOrgGroupModel(Base):
