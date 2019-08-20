@@ -49,12 +49,29 @@ class DatabaseStorage(Storage):
         user_org_group_repo_data = self.get_user_org_group(usage_details)
         user_org_group_id = user_org_group_repo_data.id
         usage_record = UsageModel(
+            client_type=usage_details['client_type'],
+            ethereum_json_rpc_endpoint=usage_details['ethereum_json_rpc_endpoint'],
+            registry_address_key=usage_details['registry_address_key'],
             user_org_group_id=user_org_group_id,
             status=usage_details['status'],
+            start_time=usage_details['start_time'],
+            end_time=usage_details['end_time'],
+            response_time=usage_details['response_time'],
+            response_code=usage_details['response_code'],
+            error_message=usage_details['error_message'],
+            version=usage_details['version'],
+            channel_id=usage_details['channel_id'],
+            operation=usage_details['operation'],
+            group_id=usage_details["group_id"],
+            org_id=usage_details["organization_id"],
             usage_type=usage_details['usage_type'],
             usage_value=usage_details['usage_value'],
-            start_time=usage_details['start_time'],
-            end_time=usage_details['end_time']
+            user_details=usage_details['user_details'],
+            user_name=usage_details["username"],
+            service_id=usage_details["service_id"],
+            resource=usage_details["service_method"],
+            request_id=usage_details["request_id"],
+
         )
         self.usage_repo.create_item(usage_record)
 
