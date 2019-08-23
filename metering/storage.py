@@ -53,9 +53,6 @@ class DatabaseStorage(Storage):
             return user_org_group_id.id
         return user_org_group_id
 
-    def add_user_org_group(self, username, user_address, service_id, group_id):
-        pass
-
     def add_usage_data(self, usage_details):
         user_org_group_id = self.get_user_org_group_id(usage_details)
 
