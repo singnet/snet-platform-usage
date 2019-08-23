@@ -50,6 +50,7 @@ class TestTotalCalls(unittest.TestCase):
             "error_message": "",
             "version": "v1.0.0",
             'username': 'user@snet',
+            'payment_mode': 'freecall',
             "operation": "read",
             "usage_type": "apicall",
             "status": "success",
@@ -60,7 +61,8 @@ class TestTotalCalls(unittest.TestCase):
             "client_type": None,
             "channel_id": None,
             "user_details": None,
-            "user_agent": None
+            "user_agent": None,
+            "user_address": None
         })
 
         self.storage_service.add_usage_data({
@@ -79,6 +81,7 @@ class TestTotalCalls(unittest.TestCase):
             "error_message": "",
             "version": "v1.0.0",
             'username': 'user@snet',
+            'payment_mode': 'freecall',
             "operation": "read",
             "usage_type": "apicall",
             "status": "failed",
@@ -89,7 +92,8 @@ class TestTotalCalls(unittest.TestCase):
             "client_type": None,
             "channel_id": None,
             "user_details": None,
-            "user_agent": None
+            "user_agent": None,
+            "user_address": None
         })
         self.assertEqual((1, 100), self.storage_service.get_usage_details(
             user_name='user@snet', org_id='snet', service_id='example-service'))

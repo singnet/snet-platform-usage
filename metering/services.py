@@ -5,9 +5,9 @@ from storage import DatabaseStorage
 
 
 def is_free_call(usage_details_dict):
-    if not usage_details_dict['username'] or len(usage_details_dict['username']):
-        return False
-    return True
+    if not usage_details_dict['payment_mode'] == 'free_call':
+        return True
+    return False
 
 
 class UsageService(object):
@@ -27,25 +27,5 @@ class UsageService(object):
 
     def save_usage_details(self, usage_details_dict):
         # nedd to introduce entities when we enhance  feature to this service right now directly using dicts
-        if is_free_call(usage_details_dict):
-            channel_id = usage_details_dict['channel_id']
-            group_id = usage_details_dict['group_id']
-            username = APIUtilityService().get_user_name(channel_id, group_id)
-            usage_details_dict['username'] = username
         self.storage_service.add_usage_data(usage_details_dict)
         return
-
-
-class APIUtilityService:
-
-    @staticmethod
-    def get_user_name(channel_id, group_id):
-        url = MARKETPLACE_CHANNEL_USER_URL.format(group_id, channel_id)
-        response = requests.get(url)
-        user_data = response.json()
-        try:
-            username = user_data[0]['username']
-        except Exception as e:
-            print(e)
-            raise Exception("Failed to get username from marketplace")
-        return username

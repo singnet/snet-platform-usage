@@ -1,6 +1,3 @@
-plugins:
-  - serverless-offline
-  - serverless-python-requirements
 
 service: metering
 
@@ -38,14 +35,14 @@ package:
 functions:
   get-freecalls:
     handler: handlers/freecall_handler.main
-    role: ${file(./config.${self:provider.stage}.json):ROLE}
-    vpc:
-      securityGroupIds:
-        - ${file(./config.${self:provider.stage}.json):SG1}
-        - ${file(./config.${self:provider.stage}.json):SG2}
-      subnetIds:
-        - ${file(./config.${self:provider.stage}.json):VPC1}
-        - ${file(./config.${self:provider.stage}.json):VPC2}
+    #    role: ${file(./config.${self:provider.stage}.json):ROLE}
+    #    vpc:
+    #      securityGroupIds:
+    #        - ${file(./config.${self:provider.stage}.json):SG1}
+    #        - ${file(./config.${self:provider.stage}.json):SG2}
+    #      subnetIds:
+    #        - ${file(./config.${self:provider.stage}.json):VPC1}
+    #        - ${file(./config.${self:provider.stage}.json):VPC2}
     #    The following are a few example events you can configure
     #    NOTE: Please make sure to change your handler code to work with those events
     #    Check the event documentation for details
@@ -70,14 +67,14 @@ functions:
               - x-requested-with
   create-usage:
     handler: handlers.usage_handler.main
-    role: ${file(./config.${self:provider.stage}.json):ROLE}
-    vpc:
-      securityGroupIds:
-        - ${file(./config.${self:provider.stage}.json):SG1}
-        - ${file(./config.${self:provider.stage}.json):SG2}
-      subnetIds:
-        - ${file(./config.${self:provider.stage}.json):VPC1}
-        - ${file(./config.${self:provider.stage}.json):VPC2}
+    #    role: ${file(./config.${self:provider.stage}.json):ROLE}
+    #    vpc:
+    #      securityGroupIds:
+    #        - ${file(./config.${self:provider.stage}.json):SG1}
+    #        - ${file(./config.${self:provider.stage}.json):SG2}
+    #      subnetIds:
+    #        - ${file(./config.${self:provider.stage}.json):VPC1}
+    #        - ${file(./config.${self:provider.stage}.json):VPC2}
     #    The following are a few example events you can configure
     #    NOTE: Please make sure to change your handler code to work with those events
     #    Check the event documentation for details
@@ -85,10 +82,10 @@ functions:
       - http:
           path: /usage
           method: post
-          authorizer:
-            type: request
-            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
-            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+          #          authorizer:
+          #            type: request
+          #            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
+          #            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:

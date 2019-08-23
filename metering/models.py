@@ -22,7 +22,8 @@ class UserOrgGroupModel(Base):
     id = Column('id', Integer, primary_key=True)
     payment_group_id = Column('group', VARCHAR(225))
     org_id = Column('org_id', VARCHAR(225), nullable=False)
-    user_name = Column('user_name', VARCHAR(225), nullable=False)
+    user_name = Column('user_name', VARCHAR(225))
+    user_address = Column('user_address', VARCHAR(225))
     created_at = Column('created_at', TIMESTAMP(
         timezone=True), nullable=False, server_default=func.current_timestamp())
     service_id = Column('service_id', VARCHAR(225), nullable=False)
@@ -41,7 +42,7 @@ class UsageModel(Base):
     end_time = Column('end_time', TIMESTAMP(timezone=True))
     created_at = Column('created_at', TIMESTAMP(
         timezone=True), nullable=False, server_default=func.current_timestamp())
-
+    payment_mode = Column('payment_mode', VARCHAR(225))
     group_id = Column('group_id', VARCHAR(225))
     registry_address_key = Column('registry_address_key', VARCHAR(225))
     ethereum_json_rpc_endpoint = Column('ethereum_json_rpc_endpoint', VARCHAR(225))
@@ -56,6 +57,6 @@ class UsageModel(Base):
     user_address = Column('user_address', VARCHAR(225))
     user_name = Column('username', VARCHAR(225))
     org_id = Column('org_id', VARCHAR(225))
-    service_id = Column('org_id', VARCHAR(225))
+    service_id = Column('service_id', VARCHAR(225))
     resource = Column('resource', VARCHAR(225))
     request_id = Column('request_id', VARCHAR(225))

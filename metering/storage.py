@@ -1,7 +1,14 @@
+from constants import PAYMENT_MODE_FREE_CALL
 from models import UserOrgGroupModel, UsageModel
 from repository.org_service_config_repository import OrgServiceRepo
 from repository.usage_repository import UsageRepository
 from repository.user_org_group_repository import UserOrgGroupRepository
+
+
+def is_free_call(usage_details_dict):
+    if not usage_details_dict['payment_mode'] == 'free_call':
+        return True
+    return False
 
 
 class Storage(object):
@@ -16,38 +23,56 @@ class Storage(object):
 
 
 class DatabaseStorage(Storage):
-    usage_repo = UsageRepository()
-    org_service_config_repo = OrgServiceRepo()
-    user_org_group_repo = UserOrgGroupRepository()
 
-    def get_user_org_group(self, usage_details):
-        user_org_group_repo_data = self.user_org_group_repo.get_user_org_group_data(
-            payment_group_id=usage_details["group_id"],
-            org_id=usage_details["organization_id"],
-            user_name=usage_details["username"],
-            service_id=usage_details["service_id"],
-            resource=usage_details["service_method"]
-        )
+    def __init__(self):
+        self.usage_repo = UsageRepository()
+        self.org_service_config_repo = OrgServiceRepo()
+        self.user_org_group_repo = UserOrgGroupRepository()
 
-        return user_org_group_repo_data
+    def get_user_org_group_id(self, usage_details):
+
+        if usage_details['payment_mode'] == PAYMENT_MODE_FREE_CALL:
+            user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_username(
+                usage_details['username'],
+                usage_details['organization_id'],
+                usage_details['service_id'],
+                usage_details['service_method']
+            )
+        elif usage_details['user_address'] is None:
+            user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_user_address(
+                usage_details['user_address'],
+                usage_details['organization_id'],
+                usage_details['service_id'],
+                usage_details['service_method'],
+                usage_details['group_id']
+            )
+        else:
+            raise Exception('Unknown user request error')
+
+        if user_org_group_id is not None:
+            return user_org_group_id.id
+        return user_org_group_id
+
+    def add_user_org_group(self, username, user_address, service_id, group_id):
+        pass
 
     def add_usage_data(self, usage_details):
-        existing_user_org_group_repo_data = self.get_user_org_group(
-            usage_details)
+        user_org_group_id = self.get_user_org_group_id(usage_details)
 
-        if existing_user_org_group_repo_data is None:
-            print("existing_user_org_group_repo_data is None")
+        if user_org_group_id is None:
+            print(f"No user org group data found for user")
             new_user_org_record = UserOrgGroupModel(
                 payment_group_id=usage_details["group_id"],
                 org_id=usage_details["organization_id"],
                 user_name=usage_details["username"],
+                user_address=usage_details["user_address"],
                 service_id=usage_details["service_id"],
                 resource=usage_details["service_method"]
             )
             self.user_org_group_repo.create_item(new_user_org_record)
 
-        user_org_group_repo_data = self.get_user_org_group(usage_details)
-        user_org_group_id = user_org_group_repo_data.id
+        user_org_group_id = self.get_user_org_group_id(usage_details)
+
         usage_record = UsageModel(
             client_type=usage_details['client_type'],
             ethereum_json_rpc_endpoint=usage_details['ethereum_json_rpc_endpoint'],
@@ -70,8 +95,7 @@ class DatabaseStorage(Storage):
             user_name=usage_details["username"],
             service_id=usage_details["service_id"],
             resource=usage_details["service_method"],
-            request_id=usage_details["request_id"],
-
+            request_id=usage_details["request_id"]
         )
         self.usage_repo.create_item(usage_record)
 
