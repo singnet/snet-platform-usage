@@ -65,7 +65,12 @@ class DatabaseStorage(Storage):
                 resource=usage_details["service_method"]
             )
             self.user_org_group_repo.create_item(new_user_org_record)
-        logger.info("Added user org group data")
+        logger.info(f"Added user org group data: group_id: {usage_details['group_id']}, "
+                    f"org_id: {usage_details['organization_id']}, "
+                    f"user_name: {usage_details['username']}, "
+                    f"user_address: {usage_details['user_address']}, "
+                    f"service_id: {usage_details['service_id']}, "
+                    f"resource {usage_details['service_method']}")
         user_org_group_id = self.get_user_org_group_id(usage_details)
 
         usage_record = UsageModel(
@@ -93,7 +98,7 @@ class DatabaseStorage(Storage):
             request_id=usage_details["request_id"]
         )
         self.usage_repo.create_item(usage_record)
-        logger.info("added usage data")
+        logger.info(f"added usage data for {usage_details}")
 
     def get_usage_details(self, user_name, org_id, service_id, group_id=None):
         optin_time = self.usage_repo.get_optin_time(
