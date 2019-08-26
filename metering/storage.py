@@ -55,7 +55,13 @@ class DatabaseStorage(Storage):
         user_org_group_id = self.get_user_org_group_id(usage_details)
 
         if user_org_group_id is None:
-            logger.info("No user org group data found for user")
+            logger.info(f"No user org group data found for "
+                        f"group_id: {usage_details['group_id']}, "
+                        f"org_id: {usage_details['organization_id']}, "
+                        f"user_name: {usage_details['username']}, "
+                        f"user_address: {usage_details['user_address']}, "
+                        f"service_id: {usage_details['service_id']}, "
+                        f"resource {usage_details['service_method']}")
             new_user_org_record = UserOrgGroupModel(
                 payment_group_id=usage_details["group_id"],
                 org_id=usage_details["organization_id"],
@@ -65,7 +71,7 @@ class DatabaseStorage(Storage):
                 resource=usage_details["service_method"]
             )
             self.user_org_group_repo.create_item(new_user_org_record)
-        logger.info(f"Added user org group data: group_id: {usage_details['group_id']}, "
+        logger.info(f"Added user org group data\ngroup_id: {usage_details['group_id']}, "
                     f"org_id: {usage_details['organization_id']}, "
                     f"user_name: {usage_details['username']}, "
                     f"user_address: {usage_details['user_address']}, "
