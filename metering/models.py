@@ -12,9 +12,11 @@ class OrgServiceConfigModel(Base):
     org_id = Column('org_id', VARCHAR(225), nullable=False)
     service_id = Column('service_id', VARCHAR(225), nullable=False)
     free_calls = Column('free_calls', Integer, nullable=False)
-    effective_start_date = Column('effective_start_date', TIMESTAMP(timezone=True))
+    effective_start_date = Column(
+        'effective_start_date', TIMESTAMP(timezone=True))
     effective_end_date = Column('effective_end_date', TIMESTAMP(timezone=True))
-    created_at = Column('created_at', TIMESTAMP(timezone=True), server_default=func.current_timestamp())
+    created_at = Column('created_at', TIMESTAMP(
+        timezone=True), server_default=func.current_timestamp())
 
 
 class UserOrgGroupModel(Base):
@@ -45,7 +47,8 @@ class UsageModel(Base):
     payment_mode = Column('payment_mode', VARCHAR(225))
     group_id = Column('group_id', VARCHAR(225))
     registry_address_key = Column('registry_address_key', VARCHAR(225))
-    ethereum_json_rpc_endpoint = Column('ethereum_json_rpc_endpoint', VARCHAR(225))
+    ethereum_json_rpc_endpoint = Column(
+        'ethereum_json_rpc_endpoint', VARCHAR(225))
     response_time = Column('response_time', FLOAT)
     response_code = Column('response_code', VARCHAR(225))
     error_message = Column('error_message', VARCHAR(225))

@@ -37,7 +37,8 @@ def main(event, context):
             )
 
     else:
-        logger.error(f"Request validation failed for {event['queryStringParameters']}")
+        logger.error(
+            f"Request validation failed for {event['queryStringParameters']}")
         return_value = make_response(
             status_code=StatusCode.BAD_PARAMETERS_CODE,
             header=HEADER_POST_RESPONSE,
