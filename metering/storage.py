@@ -1,14 +1,12 @@
+import logging
+
 from constants import PAYMENT_MODE_FREE_CALL
 from models import UserOrgGroupModel, UsageModel
 from repository.org_service_config_repository import OrgServiceRepo
 from repository.usage_repository import UsageRepository
 from repository.user_org_group_repository import UserOrgGroupRepository
 
-
-def is_free_call(usage_details_dict):
-    if not usage_details_dict['payment_mode'] == 'free_call':
-        return True
-    return False
+logger = logging.getLogger(__name__)
 
 
 class Storage(object):
@@ -57,7 +55,7 @@ class DatabaseStorage(Storage):
         user_org_group_id = self.get_user_org_group_id(usage_details)
 
         if user_org_group_id is None:
-            print(f"No user org group data found for user")
+            logger.info("No user org group data found for user")
             new_user_org_record = UserOrgGroupModel(
                 payment_group_id=usage_details["group_id"],
                 org_id=usage_details["organization_id"],
@@ -67,7 +65,7 @@ class DatabaseStorage(Storage):
                 resource=usage_details["service_method"]
             )
             self.user_org_group_repo.create_item(new_user_org_record)
-
+        logger.info("Added user org group data")
         user_org_group_id = self.get_user_org_group_id(usage_details)
 
         usage_record = UsageModel(
@@ -95,6 +93,7 @@ class DatabaseStorage(Storage):
             request_id=usage_details["request_id"]
         )
         self.usage_repo.create_item(usage_record)
+        logger.info("added usage data")
 
     def get_usage_details(self, user_name, org_id, service_id, group_id=None):
         optin_time = self.usage_repo.get_optin_time(

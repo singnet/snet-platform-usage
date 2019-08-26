@@ -32,3 +32,9 @@ def validate_request(required_keys, request_body):
 
 def validator_usage():
     pass
+
+
+def is_free_call(usage_details_dict):
+    if not usage_details_dict['payment_mode'] == 'free_call':
+        return True
+    return False
