@@ -19,7 +19,7 @@ def main(event, context):
         try:
             org_id = event['queryStringParameters']['organization_id']
             service_id = event['queryStringParameters']['service_id']
-            username = event['queryStringParameters']['username']
+            username = event['requestContext']['authorizer']['claims']['email']
             free_call_details = usage_service.get_free_call_details(
                 username, org_id, service_id)
             return_value = make_response(
@@ -37,7 +37,7 @@ def main(event, context):
             )
 
     else:
-        logger.error('Request validation failed')
+        logger.error(f"Request validation failed for {event['queryStringParameters']}")
         return_value = make_response(
             status_code=StatusCode.BAD_PARAMETERS_CODE,
             header=HEADER_POST_RESPONSE,

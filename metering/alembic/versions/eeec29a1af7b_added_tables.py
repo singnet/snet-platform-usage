@@ -27,8 +27,8 @@ def upgrade():
                     sa.Column('free_calls', sa.Integer(), nullable=False),
                     sa.Column('effective_start_date', sa.TIMESTAMP(
                         timezone=True), nullable=True),
-                    sa.Column('effective_end_date', sa.TIMESTAMP(timezone=True),
-                              server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
+                    sa.Column('effective_end_date', sa.TIMESTAMP(
+                        timezone=True), nullable=True),
                     sa.Column('created_at', sa.TIMESTAMP(
                         timezone=True), nullable=True),
                     sa.PrimaryKeyConstraint('id')
