@@ -10,6 +10,7 @@ HEADER_POST_RESPONSE = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
 }
+PAYMENT_MODE_FREE_CALL = 'freecall'
 
 
 class StatusMessage:
