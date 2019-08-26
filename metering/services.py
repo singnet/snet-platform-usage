@@ -1,4 +1,8 @@
+import logging
+
 from storage import DatabaseStorage
+
+logger = logging.getLogger(__name__)
 
 
 class UsageService(object):
@@ -13,8 +17,11 @@ class UsageService(object):
         if not total_calls:
             total_calls = 0
 
-        return {"username": username, "org_id": org_id, "service_id": service_id, "total_calls_made": total_calls,
-                "free_calls_allowed": free_calls}
+        response = {"username": username, "org_id": org_id, "service_id": service_id, "total_calls_made": total_calls,
+                    "free_calls_allowed": free_calls}
+
+        logger.info(response)
+        return response
 
     def save_usage_details(self, usage_details_dict):
         # nedd to introduce entities when we enhance  feature to this service right now directly using dicts
