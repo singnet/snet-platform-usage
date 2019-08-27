@@ -1,6 +1,10 @@
 import logging
 
+import requests
+
+from settings import MARKETPLACE_CHANNEL_USER_URL
 from storage import DatabaseStorage
+from utils import is_free_call
 
 logger = logging.getLogger(__name__)
 
@@ -25,5 +29,25 @@ class UsageService(object):
 
     def save_usage_details(self, usage_details_dict):
         # nedd to introduce entities when we enhance  feature to this service right now directly using dicts
+        if is_free_call(usage_details_dict):
+            channel_id = usage_details_dict['channel_id']
+            group_id = usage_details_dict['group_id']
+            username = APIUtilityService().get_user_name(channel_id, group_id)
+            usage_details_dict['username'] = username
         self.storage_service.add_usage_data(usage_details_dict)
         return
+
+
+class APIUtilityService:
+
+    @staticmethod
+    def get_user_name(channel_id, group_id):
+        url = MARKETPLACE_CHANNEL_USER_URL.format(group_id, channel_id)
+        response = requests.get(url)
+        user_data = response.json()
+        try:
+            username = user_data[0]['username']
+        except Exception as e:
+            print(e)
+            raise Exception("Failed to get username from marketplace")
+        return username
