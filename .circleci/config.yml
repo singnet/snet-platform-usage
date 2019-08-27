@@ -1,51 +1,54 @@
 ---
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
 version: 2
 jobs:
   build:
-  docker:
-    - image: circleci/mysql:5.7
-  working_directory: /root/singnet
-  environment:
-    PYTHONPATH: /root/singnet/snet-platform-usage
-  steps:
-    - checkout
-    - restore_cache:
-        keys:
-          - v1-dependencies-{{ checksum "metering/requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-    - run:
-        name: Install Python and Git
-        command: |
-          mysql --version
-          service mysql start
-          apt-get update
-          apt-get -y install sudo wget git
-          apt-get -y install python3 python3-pip
-    - run:
-        name: install dependencies
-        command: |
-          python3 -m venv venv
-          . venv/bin/activate
-          pip install -r metering/requirements.txt
-    - save_cache:
-        paths:
-          - ./venv
-        key: v1-dependencies-{{ checksum "requirements.txt" }}
-    # run tests!
-    # this example uses Django's built-in test-runner
-    # other common Python testing frameworks include pytest and nose
-    # https://pytest.org
-    # https://nose.readthedocs.io
-    - run:
-        name: run tests
-        command: |
-          . venv/bin/activate
-          python metering/tests/test_total_calls.py test
-    - store_artifacts:
-        path: test-reports
-        destination: test-reports
+    docker:
+      - image: circleci/python:3.6.6-node
+      - image: circleci/mysql:8.0.16
+        environment:
+          MYSQL_ROOT_PASSWORD: rootpw
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: passw0rd
+    working_directory: ~/singnet
+    environment:
+      PYTHONPATH: ~/singnet/snet-platform-usage/metering
+    steps:
+      - checkout
+      - run:
+      # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 30`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      - run:
+          name: Initialise tables.
+          command: |
+            cd metering
+            cp tests/alembic.ini .
+            cp tests/test-settings.py settings.py
+            sudo pip install alembic
+            sudo pip install pymysql
+            sudo pip install cryptography
+            PYTHONPATH=$PWD
+            alembic upgrade head
+      - run:
+          name: Install dependencies & compile
+          command: |
+            cd metering
+            python -m compileall *.py
+            python -m compileall */*.py
+            sudo pip install -r requirements.txt
+      - run:
+          name: run tests for metering
+          command: |
+            cd metering
+            PYTHONPATH=$PWD python tests/test_total_calls.py
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
