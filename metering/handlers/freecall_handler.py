@@ -11,7 +11,7 @@ usage_service = UsageService()
 setup_logger()
 logger = logging.getLogger(__name__)
 
-required_keys = ['username', 'organization_id', 'service_id']
+required_keys = ['organization_id', 'service_id']
 
 
 def main(event, context):
