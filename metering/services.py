@@ -1,8 +1,10 @@
+import json
 import logging
 
+import boto3 as boto3
 import requests
 
-from settings import MARKETPLACE_CHANNEL_USER_URL
+from settings import MARKETPLACE_CHANNEL_USER_URL, CONTRACT_API_ARN, CONTRACT_API_STAGE
 from storage import DatabaseStorage
 from utils import is_free_call
 
@@ -32,22 +34,31 @@ class UsageService(object):
         if is_free_call(usage_details_dict):
             channel_id = usage_details_dict['channel_id']
             group_id = usage_details_dict['group_id']
-            username = APIUtilityService().get_user_name(channel_id, group_id)
-            usage_details_dict['username'] = username
+            user_address = APIUtilityService().get_user_address(group_id, channel_id)
+            usage_details_dict['user_address'] = user_address
         self.storage_service.add_usage_data(usage_details_dict)
         return
 
 
 class APIUtilityService:
+    lambda_client = boto3.client('lambda')
 
-    @staticmethod
-    def get_user_name(channel_id, group_id):
-        url = MARKETPLACE_CHANNEL_USER_URL.format(group_id, channel_id)
-        response = requests.get(url)
-        user_data = response.json()
+    def get_user_address(self, group_id, channel_id):
+        lambda_payload = {
+            "httpMethod": "GET",
+            "requestContext": {"stage": CONTRACT_API_STAGE},
+            "path": f"/contract-api/group/{group_id}/channel/{channel_id}"
+        }
+        response = self.lambda_client.invoke(
+            FunctionName=CONTRACT_API_ARN,
+            Payload=json.dumps(lambda_payload)
+        )
+        response_body_raw = json.loads(
+            response.get('Payload').read())['body']
+        response_body = json.loads(response_body_raw)
         try:
-            username = user_data[0]['username']
+            user_address = response_body['data'][0]['sender']
         except Exception as e:
             print(e)
-            raise Exception("Failed to get username from marketplace")
-        return username
+            raise Exception("Failed to get user address from marketplace")
+        return user_address
