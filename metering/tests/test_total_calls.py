@@ -13,7 +13,8 @@ class TestTotalCalls(unittest.TestCase):
         self.usage_repository = UsageRepository()
         self.user_org_group_repository = UserOrgGroupRepository()
         self.storage_service = DatabaseStorage()
-        self.org_service_repository.get_default_session().query(OrgServiceConfigModel).delete()
+        self.org_service_repository.get_default_session().query(
+            OrgServiceConfigModel).delete()
         self.org_service_repository.get_default_session().query(UsageModel).delete()
         self.org_service_repository.get_default_session().query(UserOrgGroupModel).delete()
         service_items = list()
@@ -100,7 +101,8 @@ class TestTotalCalls(unittest.TestCase):
         self.org_service_repository.get_default_session().query(UsageModel).delete()
 
     def tearDown(self):
-        self.org_service_repository.get_default_session().query(OrgServiceConfigModel).delete()
+        self.org_service_repository.get_default_session().query(
+            OrgServiceConfigModel).delete()
         self.org_service_repository.get_default_session().query(UsageModel).delete()
         self.org_service_repository.get_default_session().query(UserOrgGroupModel).delete()
 

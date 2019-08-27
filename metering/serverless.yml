@@ -28,7 +28,7 @@ custom:
   origin:
     local: localhost
     ropsten: "*"
-    mainnet: "snet.com"
+    mainnet: "*"
 
 package:
   exclude:
@@ -53,11 +53,11 @@ functions:
       - http:
           path: /usage/freecalls
           method: get
-#          authorizer:
-#            name: user-authorizer
-#            type: COGNITO_USER_POOLS
-#            arn: ${file(./config.${self:provider.stage}.json):AUTHORIZER}
-#            identitySource: method.request.header.Authorization
+          #          authorizer:
+          #            name: user-authorizer
+          #            type: COGNITO_USER_POOLS
+          #            arn: ${file(./config.${self:provider.stage}.json):AUTHORIZER}
+          #            identitySource: method.request.header.Authorization
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
