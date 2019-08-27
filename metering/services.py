@@ -2,9 +2,8 @@ import json
 import logging
 
 import boto3 as boto3
-import requests
 
-from settings import MARKETPLACE_CHANNEL_USER_URL, CONTRACT_API_ARN, CONTRACT_API_STAGE
+from settings import CONTRACT_API_ARN, CONTRACT_API_STAGE
 from storage import DatabaseStorage
 from utils import is_free_call
 
