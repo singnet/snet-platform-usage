@@ -1,0 +1,54 @@
+---
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.6-node
+      - image: circleci/mysql:8.0.16
+        environment:
+          MYSQL_ROOT_PASSWORD: rootpw
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: passw0rd
+    working_directory: ~/singnet
+    environment:
+      PYTHONPATH: ~/singnet/snet-platform-usage/metering
+    steps:
+      - checkout
+      - run:
+      # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 30`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      - run:
+          name: Initialise tables.
+          command: |
+            cd metering
+            cp tests/alembic.ini .
+            cp tests/test-settings.py settings.py
+            sudo pip install alembic
+            sudo pip install pymysql
+            sudo pip install cryptography
+            PYTHONPATH=$PWD
+            alembic upgrade head
+      - run:
+          name: Install dependencies & compile
+          command: |
+            cd metering
+            python -m compileall *.py
+            python -m compileall */*.py
+            sudo pip install -r requirements.txt
+      - run:
+          name: run tests for metering
+          command: |
+            cd metering
+            PYTHONPATH=$PWD python tests/test_total_calls.py
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
