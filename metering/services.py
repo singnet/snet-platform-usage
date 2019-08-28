@@ -40,7 +40,7 @@ class UsageService(object):
 
 
 class APIUtilityService:
-    lambda_client = boto3.client('lambda')
+    lambda_client = boto3.client('lambda', aws_access_key_id='AKIAXYSEM4MOHSXERFWL', aws_secret_access_key='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', region_name='us-east-1')
 
     def get_user_address(self, group_id, channel_id):
         lambda_payload = {
@@ -48,14 +48,15 @@ class APIUtilityService:
             "requestContext": {"stage": CONTRACT_API_STAGE},
             "path": f"/contract-api/group/{group_id}/channel/{channel_id}"
         }
-        response = self.lambda_client.invoke(
-            FunctionName=CONTRACT_API_ARN,
-            Payload=json.dumps(lambda_payload)
-        )
-        response_body_raw = json.loads(
-            response.get('Payload').read())['body']
-        response_body = json.loads(response_body_raw)
+
         try:
+            response = self.lambda_client.invoke(
+                FunctionName=CONTRACT_API_ARN,
+                Payload=json.dumps(lambda_payload)
+            )
+            response_body_raw = json.loads(
+                response.get('Payload').read())['body']
+            response_body = json.loads(response_body_raw)
             user_address = response_body['data'][0]['sender']
         except Exception as e:
             print(e)
