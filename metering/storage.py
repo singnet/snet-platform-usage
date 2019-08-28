@@ -36,7 +36,7 @@ class DatabaseStorage(Storage):
                 usage_details['service_id'],
                 usage_details['service_method']
             )
-        elif usage_details['user_address'] is None:
+        else:
             user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_user_address(
                 usage_details['user_address'],
                 usage_details['organization_id'],
@@ -44,8 +44,6 @@ class DatabaseStorage(Storage):
                 usage_details['service_method'],
                 usage_details['group_id']
             )
-        else:
-            raise Exception('Unknown user request error')
 
         if user_org_group_id is not None:
             return user_org_group_id.id
@@ -101,7 +99,8 @@ class DatabaseStorage(Storage):
             user_name=usage_details["username"],
             service_id=usage_details["service_id"],
             resource=usage_details["service_method"],
-            request_id=usage_details["request_id"]
+            request_id=usage_details["request_id"],
+            payment_mode=usage_details["payment_mode"]
         )
         self.usage_repo.create_item(usage_record)
         logger.info(f"added usage data for {usage_details}")
