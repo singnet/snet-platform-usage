@@ -1,5 +1,7 @@
 import logging
 
+from settings import PAYMENT_MODE_FREECALL_VALUE
+
 
 def make_response(status_code, body, header=None):
     return {
@@ -32,3 +34,9 @@ def validate_request(required_keys, request_body):
 
 def validator_usage():
     pass
+
+
+def is_free_call(usage_details_dict):
+    if usage_details_dict['payment_mode'] == PAYMENT_MODE_FREECALL_VALUE:
+        return True
+    return False

@@ -11,7 +11,7 @@ usage_service = UsageService()
 setup_logger()
 logger = logging.getLogger(__name__)
 
-required_keys = ['username', 'organization_id', 'service_id']
+required_keys = ['organization_id', 'service_id']
 
 
 def main(event, context):
@@ -37,7 +37,7 @@ def main(event, context):
             )
 
     else:
-        logger.error('Request validation failed')
+        logger.error(f"Request validation failed for {event['queryStringParameters']}")
         return_value = make_response(
             status_code=StatusCode.BAD_PARAMETERS_CODE,
             header=HEADER_POST_RESPONSE,
