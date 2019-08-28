@@ -35,6 +35,6 @@ def validator_usage():
 
 
 def is_free_call(usage_details_dict):
-    if not usage_details_dict['payment_mode'] == 'free_call':
+    if usage_details_dict['payment_mode'] == 'free_call':
         return True
     return False
