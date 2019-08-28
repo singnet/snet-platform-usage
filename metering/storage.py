@@ -36,7 +36,7 @@ class DatabaseStorage(Storage):
                 usage_details['service_id'],
                 usage_details['service_method']
             )
-        elif usage_details['user_'] is None:
+        else:
             user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_user_address(
                 usage_details['user_address'],
                 usage_details['organization_id'],
@@ -44,8 +44,6 @@ class DatabaseStorage(Storage):
                 usage_details['service_method'],
                 usage_details['group_id']
             )
-        else:
-            raise Exception('Unknown user request error')
 
         if user_org_group_id is not None:
             return user_org_group_id.id
