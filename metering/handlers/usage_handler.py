@@ -22,7 +22,7 @@ def main(event, context):
         if validate_request(required_keys, request_dict):
             logger.info(f"usage record before modification: {request_dict}")
             usage_detail_dict = usage_record_add_verify_fields(request_dict)
-            logger.info(f"usage record before modification: {usage_detail_dict}")
+            logger.info(f"usage record after modification: {usage_detail_dict}")
             usage_service.save_usage_details(usage_detail_dict)
             response = make_response(
                 StatusCode.SUCCESS_GET_CODE,
