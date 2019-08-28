@@ -4,6 +4,7 @@ import logging
 from constants import StatusCode, StatusMessage
 from logger import setup_logger
 from services import UsageService
+from settings import PAYMENT_MODE_FREECALL_VALUE
 from utils import validate_request, make_response
 
 usage_service = UsageService()
@@ -28,7 +29,7 @@ def add_verify_fields(usage_detail_dict):
             usage_detail_dict[key] = None
 
     if usage_detail_dict['username'] is not None and usage_detail_dict['user_address'] is None:
-        usage_detail_dict['payment_mode'] = 'freecall'
+        usage_detail_dict['payment_mode'] = PAYMENT_MODE_FREECALL_VALUE
     else:
         usage_detail_dict['payment_mode'] = 'paid'
     return usage_detail_dict

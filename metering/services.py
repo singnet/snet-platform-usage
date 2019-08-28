@@ -40,7 +40,7 @@ class UsageService(object):
 
 
 class APIUtilityService:
-    lambda_client = boto3.client('lambda', aws_access_key_id='AKIAXYSEM4MOHSXERFWL', aws_secret_access_key='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', region_name='us-east-1')
+    lambda_client = boto3.client('lambda')
 
     def get_user_address(self, group_id, channel_id):
         lambda_payload = {
