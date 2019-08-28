@@ -47,7 +47,8 @@ class UsageModel(Base):
     payment_mode = Column('payment_mode', VARCHAR(225))
     group_id = Column('group_id', VARCHAR(225))
     registry_address_key = Column('registry_address_key', VARCHAR(225))
-    ethereum_json_rpc_endpoint = Column('ethereum_json_rpc_endpoint', VARCHAR(225))
+    ethereum_json_rpc_endpoint = Column(
+        'ethereum_json_rpc_endpoint', VARCHAR(225))
     response_time = Column('response_time', FLOAT)
     response_code = Column('response_code', VARCHAR(225))
     error_message = Column('error_message', VARCHAR(225))
