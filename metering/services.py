@@ -30,7 +30,7 @@ class UsageService(object):
 
     def save_usage_details(self, usage_details_dict):
         # nedd to introduce entities when we enhance  feature to this service right now directly using dicts
-        if is_free_call(usage_details_dict):
+        if not is_free_call(usage_details_dict):
             channel_id = usage_details_dict['channel_id']
             group_id = usage_details_dict['group_id']
             user_address = APIUtilityService().get_user_address(group_id, channel_id)
