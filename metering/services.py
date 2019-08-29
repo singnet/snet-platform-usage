@@ -40,7 +40,9 @@ class UsageService(object):
 
 
 class APIUtilityService:
-    lambda_client = boto3.client('lambda')
+
+    def __init__(self):
+        self.lambda_client = boto3.client('lambda')
 
     def get_user_address(self, group_id, channel_id):
         lambda_payload = {
