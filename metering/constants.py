@@ -10,10 +10,13 @@ HEADER_POST_RESPONSE = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
 }
-PAYMENT_MODE_FREE_CALL = 'freecall'
 
 
 class StatusMessage:
     BAD_PARAMETER = "Request validation failed"
     SERVER_ERROR_MSG = "failed"
     SUCCESS_POST_CODE = "successful"
+
+
+PAYMENT_MODE_FREECALL_VALUE = "freecall"
+PAYMENT_MODE_ESCROW_VALUE = "escrow"
