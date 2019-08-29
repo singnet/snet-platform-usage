@@ -43,4 +43,3 @@ def main(event, context):
         )
 
     return response
-
