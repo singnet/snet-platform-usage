@@ -4,7 +4,7 @@ from models import UserOrgGroupModel, UsageModel
 from repository.org_service_config_repository import OrgServiceRepo
 from repository.usage_repository import UsageRepository
 from repository.user_org_group_repository import UserOrgGroupRepository
-from constants import PAYMENT_MODE_FREECALL_VALUE
+from constants import PAYMENT_MODE_FREECALL_VALUE, PAYMENT_MODE_ESCROW_VALUE
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class DatabaseStorage(Storage):
                 usage_details['service_id'],
                 usage_details['service_method']
             )
-        else:
+        elif usage_details['payment_mode'] == PAYMENT_MODE_ESCROW_VALUE:
             user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_user_address(
                 usage_details['user_address'],
                 usage_details['organization_id'],
@@ -44,6 +44,8 @@ class DatabaseStorage(Storage):
                 usage_details['service_method'],
                 usage_details['group_id']
             )
+        else:
+            raise Exception("Invalid payment mode")
 
         if user_org_group_id is not None:
             return user_org_group_id.id

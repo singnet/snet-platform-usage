@@ -19,3 +19,4 @@ class StatusMessage:
 
 
 PAYMENT_MODE_FREECALL_VALUE = "freecall"
+PAYMENT_MODE_ESCROW_VALUE = "escrow"
