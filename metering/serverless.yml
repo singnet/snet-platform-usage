@@ -41,6 +41,7 @@ functions:
     events:
       - http:
           path: /verify
+          method: get
           authorizer:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
