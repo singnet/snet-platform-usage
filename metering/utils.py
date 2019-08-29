@@ -1,6 +1,6 @@
 import logging
 
-from settings import PAYMENT_MODE_FREECALL_VALUE
+from constants import PAYMENT_MODE_FREECALL_VALUE
 
 
 def make_response(status_code, body, header=None):

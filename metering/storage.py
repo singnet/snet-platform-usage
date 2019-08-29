@@ -4,7 +4,7 @@ from models import UserOrgGroupModel, UsageModel
 from repository.org_service_config_repository import OrgServiceRepo
 from repository.usage_repository import UsageRepository
 from repository.user_org_group_repository import UserOrgGroupRepository
-from settings import PAYMENT_MODE_FREECALL_VALUE
+from constants import PAYMENT_MODE_FREECALL_VALUE
 
 logger = logging.getLogger(__name__)
 

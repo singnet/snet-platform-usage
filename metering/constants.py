@@ -16,3 +16,6 @@ class StatusMessage:
     BAD_PARAMETER = "Request validation failed"
     SERVER_ERROR_MSG = "failed"
     SUCCESS_POST_CODE = "successful"
+
+
+PAYMENT_MODE_FREECALL_VALUE = "freecall"
