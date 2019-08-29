@@ -56,7 +56,6 @@ functions:
               - X-Amz-User-Agent
               - x-requested-with
 
-
   get-freecalls:
     handler: handlers/freecall_handler.main
     role: ${file(./config.${self:provider.stage}.json):ROLE}
