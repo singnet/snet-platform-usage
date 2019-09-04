@@ -51,7 +51,7 @@ jobs:
             PYTHONPATH=$PWD coverage run -m pytest tests/test_total_calls.py
             coverage report -m
             mkdir ../test-reports
-            coverage html -d ../test-reports
+            coverage xml -o ../test-reports/coverage.xml
             COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN} coveralls
       - store_artifacts:
           path: test-reports
