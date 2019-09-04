@@ -53,6 +53,8 @@ jobs:
             mkdir ../test-reports
             coverage xml -o ../test-reports/junit.xml
             COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN} coveralls
+      - store_test_results:
+          path: test-reports
       - store_artifacts:
           path: test-reports
           #destination: test-reports
