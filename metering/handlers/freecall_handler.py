@@ -11,7 +11,7 @@ usage_service = UsageService()
 setup_logger()
 logger = logging.getLogger(__name__)
 
-required_keys = ['username', 'organization_id', 'service_id']
+required_keys = ['organization_id', 'service_id']
 
 
 def main(event, context):
@@ -19,7 +19,7 @@ def main(event, context):
         try:
             org_id = event['queryStringParameters']['organization_id']
             service_id = event['queryStringParameters']['service_id']
-            username = event['requestContext']['authorizer']['claims']['email']
+            username = event['queryStringParameters']['username']
             free_call_details = usage_service.get_free_call_details(
                 username, org_id, service_id)
             return_value = make_response(
