@@ -82,11 +82,10 @@ functions:
       - http:
           path: /usage/freecalls
           method: get
-          #          authorizer:
-          #            name: user-authorizer
-          #            type: COGNITO_USER_POOLS
-          #            arn: ${file(./config.${self:provider.stage}.json):AUTHORIZER}
-          #            identitySource: method.request.header.Authorization
+          authorizer:
+            type: request
+            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
+            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
