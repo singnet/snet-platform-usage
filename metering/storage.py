@@ -1,12 +1,13 @@
 import logging
 
+from logger import get_logger
 from models import UserOrgGroupModel, UsageModel
 from repository.org_service_config_repository import OrgServiceRepo
 from repository.usage_repository import UsageRepository
 from repository.user_org_group_repository import UserOrgGroupRepository
 from constants import PAYMENT_MODE_FREECALL_VALUE, PAYMENT_MODE_ESCROW_VALUE
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class Storage(object):
@@ -110,8 +111,14 @@ class DatabaseStorage(Storage):
     def get_usage_details(self, user_name, org_id, service_id, group_id=None):
         optin_time = self.usage_repo.get_optin_time(
             user_name, org_id, service_id)
+        logger.info(f"opt in for the user{user_name}, \n"
+                    f"org_id: {org_id}, service_id: {service_id} \n"
+                    f"{optin_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
         free_calls = self.org_service_config_repo.get_service_config(
             org_id, service_id, optin_time)
+
         total_calls = self.usage_repo.get_total_calls(
             user_name, org_id, service_id)
+
         return total_calls, free_calls

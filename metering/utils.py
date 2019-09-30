@@ -1,28 +1,25 @@
+import json
 import logging
 
 from constants import PAYMENT_MODE_FREECALL_VALUE
 
 
-def make_response(status_code, body, header=None):
-    return {
-        "statusCode": status_code,
-        "headers": header,
-        "body": body
+def generate_lambda_response(status_code, message, headers=None):
+    response = {
+        'statusCode': status_code,
+        'body': json.dumps(message),
+        'headers': {
+            'Content-Type': 'application/json',
+            "X-Requested-With": '*',
+            "Access-Control-Allow-Headers": 'Access-Control-Allow-Origin, Content-Type,X-Amz-Date,Authorization,'
+                                            'X-Api-Key,x-requested-with',
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Methods": 'GET,OPTIONS,POST'
+        }
     }
-
-
-def configure_log(logger):
-    logger.setLevel(logging.INFO)
-
-    # create a file handler
-    handler = logging.StreamHandler()
-    handler.setLevel(logging.INFO)
-    # create a logging format
-    formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
-    # add the handlers to the logger
-    logger.addHandler(handler)
+    if headers is not None:
+        response["headers"].update(headers)
+    return response
 
 
 def validate_request(required_keys, request_body):
