@@ -54,7 +54,7 @@ functions:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
             identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
-            name: sign_authorizer
+            name: verify_authorizer
 #            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
@@ -77,9 +77,6 @@ functions:
       subnetIds:
         - ${file(./config.${self:provider.stage}.json):VPC1}
         - ${file(./config.${self:provider.stage}.json):VPC2}
-    #    The following are a few example events you can configure
-    #    NOTE: Please make sure to change your handler code to work with those events
-    #    Check the event documentation for details
     events:
       - http:
           path: /usage/freecalls
@@ -88,7 +85,7 @@ functions:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
             identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
-            name: sign_authorizer
+            name: freecall_authorizer
 #            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
@@ -110,9 +107,6 @@ functions:
       subnetIds:
         - ${file(./config.${self:provider.stage}.json):VPC1}
         - ${file(./config.${self:provider.stage}.json):VPC2}
-    #    The following are a few example events you can configure
-    #    NOTE: Please make sure to change your handler code to work with those events
-    #    Check the event documentation for details
     events:
       - http:
           path: /usage
@@ -121,7 +115,7 @@ functions:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
             identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
-            name: sign_authorizer
+            name: usage_authorizer
 #            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
