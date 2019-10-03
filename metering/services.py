@@ -1,10 +1,11 @@
 import json
 
 import boto3 as boto3
-
 from logger import get_logger
-from settings import CONTRACT_API_ARN, CONTRACT_API_STAGE
+from settings import CONTRACT_API_ARN
+from settings import CONTRACT_API_STAGE
 from storage import DatabaseStorage
+
 from utils import is_free_call
 
 logger = get_logger(__name__)

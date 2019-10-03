@@ -1,14 +1,14 @@
 import json
 import logging
 
-from constants import StatusCode, StatusMessage
+from constants import StatusCode
+from constants import StatusMessage
 from logger import get_logger
 from services import UsageService
-from utils import (
-    validate_request,
-    usage_record_add_verify_fields,
-    generate_lambda_response,
-)
+
+from utils import generate_lambda_response
+from utils import usage_record_add_verify_fields
+from utils import validate_request
 
 usage_service = UsageService()
 
