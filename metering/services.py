@@ -17,7 +17,8 @@ class UsageService(object):
         total_calls, free_calls = self.storage_service.get_usage_details(
             username, org_id, service_id, group_id)
 
-        logger.info(f"Free calls allowed: {free_calls}, Total calls made: {total_calls}")
+        logger.info(
+            f"Free calls allowed: {free_calls}, Total calls made: {total_calls}")
         if not free_calls:
             free_calls = 0
         if not total_calls:
@@ -38,7 +39,8 @@ class UsageService(object):
 
             user_address = APIUtilityService().get_user_address(group_id, channel_id)
             usage_details_dict['user_address'] = user_address
-            logger.info(f"fetched user address from contract api: {user_address}")
+            logger.info(
+                f"fetched user address from contract api: {user_address}")
 
         self.storage_service.add_usage_data(usage_details_dict)
         return

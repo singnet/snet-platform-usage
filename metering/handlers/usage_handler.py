@@ -20,7 +20,8 @@ def main(event, context):
         request_dict = json.loads(event['body'])
         if validate_request(required_keys, request_dict):
             usage_detail_dict = usage_record_add_verify_fields(request_dict)
-            logging.info(f"usage record after modification: {usage_detail_dict}")
+            logging.info(
+                f"usage record after modification: {usage_detail_dict}")
             usage_service.save_usage_details(usage_detail_dict)
             response = "success"
             status_code = StatusCode.SUCCESS_GET_CODE
