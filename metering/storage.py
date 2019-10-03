@@ -58,15 +58,13 @@ class DatabaseStorage(Storage):
         user_org_group_id = self.get_user_org_group_id(usage_details)
 
         if user_org_group_id is None:
-            logger.info(
-                f"No user org group data found for "
-                f"group_id: {usage_details['group_id']}, "
-                f"org_id: {usage_details['organization_id']}, "
-                f"user_name: {usage_details['username']}, "
-                f"user_address: {usage_details['user_address']}, "
-                f"service_id: {usage_details['service_id']}, "
-                f"resource {usage_details['service_method']}"
-            )
+            logger.info(f"No user org group data found for "
+                        f"group_id: {usage_details['group_id']}, "
+                        f"org_id: {usage_details['organization_id']}, "
+                        f"user_name: {usage_details['username']}, "
+                        f"user_address: {usage_details['user_address']}, "
+                        f"service_id: {usage_details['service_id']}, "
+                        f"resource {usage_details['service_method']}")
             new_user_org_record = UserOrgGroupModel(
                 payment_group_id=usage_details["group_id"],
                 org_id=usage_details["organization_id"],
@@ -82,13 +80,13 @@ class DatabaseStorage(Storage):
             f"user_name: {usage_details['username']}, "
             f"user_address: {usage_details['user_address']}, "
             f"service_id: {usage_details['service_id']}, "
-            f"resource {usage_details['service_method']}"
-        )
+            f"resource {usage_details['service_method']}")
         user_org_group_id = self.get_user_org_group_id(usage_details)
 
         usage_record = UsageModel(
             client_type=usage_details["client_type"],
-            ethereum_json_rpc_endpoint=usage_details["ethereum_json_rpc_endpoint"],
+            ethereum_json_rpc_endpoint=usage_details[
+                "ethereum_json_rpc_endpoint"],
             registry_address_key=usage_details["registry_address_key"],
             user_org_group_id=user_org_group_id,
             status=usage_details["status"],
@@ -115,17 +113,16 @@ class DatabaseStorage(Storage):
         logger.info(f"added usage data for {usage_details}")
 
     def get_usage_details(self, user_name, org_id, service_id, group_id=None):
-        optin_time = self.usage_repo.get_optin_time(user_name, org_id, service_id)
-        logger.info(
-            f"opt in for the user{user_name}, \n"
-            f"org_id: {org_id}, service_id: {service_id} \n"
-            f"{optin_time.strftime('%Y-%m-%d %H:%M:%S')}"
-        )
+        optin_time = self.usage_repo.get_optin_time(user_name, org_id,
+                                                    service_id)
+        logger.info(f"opt in for the user{user_name}, \n"
+                    f"org_id: {org_id}, service_id: {service_id} \n"
+                    f"{optin_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
         free_calls = self.org_service_config_repo.get_service_config(
-            org_id, service_id, optin_time
-        )
+            org_id, service_id, optin_time)
 
-        total_calls = self.usage_repo.get_total_calls(user_name, org_id, service_id)
+        total_calls = self.usage_repo.get_total_calls(user_name, org_id,
+                                                      service_id)
 
         return total_calls, free_calls

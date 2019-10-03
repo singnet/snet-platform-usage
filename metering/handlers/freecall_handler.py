@@ -22,16 +22,13 @@ def main(event, context):
             service_id = event["queryStringParameters"]["service_id"]
             username = event["queryStringParameters"]["username"]
 
-            logger.info(
-                f"Fetched values from request \n"
-                f"username: {username} \n"
-                f"org_id: {org_id} \n"
-                f"service_id: {service_id} \n"
-            )
+            logger.info(f"Fetched values from request \n"
+                        f"username: {username} \n"
+                        f"org_id: {org_id} \n"
+                        f"service_id: {service_id} \n")
 
             free_call_details = usage_service.get_free_call_details(
-                username, org_id, service_id
-            )
+                username, org_id, service_id)
             response = free_call_details
             status_code = StatusCode.SUCCESS_GET_CODE
         else:
@@ -42,7 +39,7 @@ def main(event, context):
     except Exception as e:
         logger.error("Failed to get free call details")
         logger.info(event)
-        status_code = (StatusCode.SERVER_ERROR_CODE,)
+        status_code = (StatusCode.SERVER_ERROR_CODE, )
         response = StatusMessage.SERVER_ERROR_MSG
 
     return generate_lambda_response(status_code, response)

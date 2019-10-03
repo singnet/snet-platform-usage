@@ -14,10 +14,13 @@ logger = get_logger(__name__)
 class UsageService(object):
     storage_service = DatabaseStorage()
 
-    def get_free_call_details(self, username, org_id, service_id, group_id=None):
+    def get_free_call_details(self,
+                              username,
+                              org_id,
+                              service_id,
+                              group_id=None):
         total_calls, free_calls = self.storage_service.get_usage_details(
-            username, org_id, service_id, group_id
-        )
+            username, org_id, service_id, group_id)
 
         logger.info(
             f"Free calls allowed: {free_calls}, Total calls made: {total_calls}"
@@ -45,9 +48,11 @@ class UsageService(object):
             channel_id = usage_details_dict["channel_id"]
             group_id = usage_details_dict["group_id"]
 
-            user_address = APIUtilityService().get_user_address(group_id, channel_id)
+            user_address = APIUtilityService().get_user_address(
+                group_id, channel_id)
             usage_details_dict["user_address"] = user_address
-            logger.info(f"fetched user address from contract api: {user_address}")
+            logger.info(
+                f"fetched user address from contract api: {user_address}")
 
         self.storage_service.add_usage_data(usage_details_dict)
         return
@@ -60,16 +65,19 @@ class APIUtilityService:
     def get_user_address(self, group_id, channel_id):
         lambda_payload = {
             "httpMethod": "GET",
-            "requestContext": {"stage": CONTRACT_API_STAGE},
+            "requestContext": {
+                "stage": CONTRACT_API_STAGE
+            },
             "path": f"/contract-api/group/{group_id}/channel/{channel_id}",
         }
 
         try:
             logger.info(f"Calling contract api for user_address")
             response = self.lambda_client.invoke(
-                FunctionName=CONTRACT_API_ARN, Payload=json.dumps(lambda_payload)
-            )
-            response_body_raw = json.loads(response.get("Payload").read())["body"]
+                FunctionName=CONTRACT_API_ARN,
+                Payload=json.dumps(lambda_payload))
+            response_body_raw = json.loads(
+                response.get("Payload").read())["body"]
             response_body = json.loads(response_body_raw)
             user_address = response_body["data"][0]["sender"]
         except Exception as e:

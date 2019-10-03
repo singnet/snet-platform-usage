@@ -9,12 +9,17 @@ def generate_lambda_response(status_code, message, headers=None):
         "statusCode": status_code,
         "body": json.dumps(message),
         "headers": {
-            "Content-Type": "application/json",
-            "X-Requested-With": "*",
-            "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Content-Type,X-Amz-Date,Authorization,"
+            "Content-Type":
+            "application/json",
+            "X-Requested-With":
+            "*",
+            "Access-Control-Allow-Headers":
+            "Access-Control-Allow-Origin, Content-Type,X-Amz-Date,Authorization,"
             "X-Api-Key,x-requested-with",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET,OPTIONS,POST",
+            "Access-Control-Allow-Origin":
+            "*",
+            "Access-Control-Allow-Methods":
+            "GET,OPTIONS,POST",
         },
     }
     if headers is not None:
@@ -70,10 +75,8 @@ def usage_record_add_verify_fields(usage_detail_dict):
         if (key not in usage_detail_dict) or (usage_detail_dict[key] == ""):
             usage_detail_dict[key] = None
 
-    if (
-        usage_detail_dict["username"] is not None
-        and usage_detail_dict["user_address"] is None
-    ):
+    if (usage_detail_dict["username"] is not None
+            and usage_detail_dict["user_address"] is None):
         usage_detail_dict["payment_mode"] = PAYMENT_MODE_FREECALL_VALUE
     else:
         usage_detail_dict["payment_mode"] = "paid"
