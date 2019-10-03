@@ -11,7 +11,6 @@ default_session = Session()
 
 
 class BaseRepository(object):
-
     def get_default_session(self, session=None):
         if not session:
             return default_session
