@@ -1,17 +1,16 @@
 import os
 
+from settings import DB_URL
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from settings import DB_URL
 
-engine = create_engine(DB_URL, echo=True)
+engine = create_engine(DB_URL, echo=False)
 
 Session = sessionmaker(bind=engine)
 default_session = Session()
 
 
 class BaseRepository(object):
-
     def get_default_session(self, session=None):
         if not session:
             return default_session

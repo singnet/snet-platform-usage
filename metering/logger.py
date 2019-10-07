@@ -1,12 +1,18 @@
-import logging.config
+import logging
+import sys
+
+FORMATTER = logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s")
 
 
-def setup_logger():
-    logging.basicConfig(
-        level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+def get_console_handler():
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(FORMATTER)
+    return console_handler
 
 
-if __name__ == '__main__':
-    setup_logger()
-    logger = logging.getLogger()
-    logger.info("hi, it is test")
+def get_logger(logger_name):
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.INFO)
+    logger.addHandler(get_console_handler())
+    logger.propagate = False
+    return logger
