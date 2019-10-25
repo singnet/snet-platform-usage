@@ -54,6 +54,8 @@ functions:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
             identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: verify_authorizer
+#            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
@@ -82,11 +84,12 @@ functions:
       - http:
           path: /usage/freecalls
           method: get
-          #          authorizer:
-          #            name: user-authorizer
-          #            type: COGNITO_USER_POOLS
-          #            arn: ${file(./config.${self:provider.stage}.json):AUTHORIZER}
-          #            identitySource: method.request.header.Authorization
+          authorizer:
+            type: request
+            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
+            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: freecall_authorizer
+#            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
@@ -118,6 +121,8 @@ functions:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
             identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: usage_authorizer
+#            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
