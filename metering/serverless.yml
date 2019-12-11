@@ -176,13 +176,8 @@ functions:
     #    Check the event documentation for details
     events:
       - http:
-          path: /usage/
+          path: /usage
           method: get
-          authorizer:
-            type: request
-            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
-            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
-            name: freecall_authorizer
 #            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
@@ -194,5 +189,3 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
               - x-requested-with
-
-
