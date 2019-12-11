@@ -51,7 +51,7 @@ class TestTotalCalls(unittest.TestCase):
             "error_message": "",
             "version": "v1.0.0",
             'username': 'user@snet',
-            'payment_mode': "",
+            'payment_mode': "freecall",
             "operation": "read",
             "usage_type": "apicall",
             "status": "success",

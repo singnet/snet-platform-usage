@@ -2,59 +2,11 @@ import logging.config
 
 
 def setup_logger():
-    logging.config.dictConfig({
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "simple": {
-                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            }
-        },
+    logging.basicConfig(
+        level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
 
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "level": "DEBUG",
-                "formatter": "simple",
-                "stream": "ext://sys.stdout"
-            }
 
-            # "info_file_handler": {
-            #     "class": "logging.handlers.RotatingFileHandler",
-            #     "level": "INFO",
-            #     "formatter": "simple",
-            #     "filename": "info.log",
-            # },
-            #
-            # "error_file_handler": {
-            #     "class": "logging.handlers.RotatingFileHandler",
-            #     "level": "ERROR",
-            #     "formatter": "simple",
-            #     "filename": "error.log",
-            #     "encoding": "utf8"
-            # }
-        },
-
-        "loggers": {
-            "sqlalchemy": {
-                "level": "ERROR",
-                "handlers": ["console"],
-                "propagate": "no"
-            },
-            "freecall_handler": {
-                "level": "ERROR",
-                "handlers": ["console"],
-                "propagate": "no"
-            },
-            "": {
-                "level": "ERROR",
-                "handlers": ["console"],
-                "propagate": "no"
-            }
-        },
-
-        "root": {
-            "level": "ERROR",
-            "handlers": ["console"]
-        }
-    })
+if __name__ == '__main__':
+    setup_logger()
+    logger = logging.getLogger()
+    logger.info("hi, it is test")

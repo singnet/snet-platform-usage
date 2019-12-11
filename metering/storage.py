@@ -1,10 +1,10 @@
 import logging
 
-from constants import PAYMENT_MODE_FREE_CALL
 from models import UserOrgGroupModel, UsageModel
 from repository.org_service_config_repository import OrgServiceRepo
 from repository.usage_repository import UsageRepository
 from repository.user_org_group_repository import UserOrgGroupRepository
+from constants import PAYMENT_MODE_FREECALL_VALUE, PAYMENT_MODE_ESCROW_VALUE
 
 logger = logging.getLogger(__name__)
 
@@ -29,14 +29,14 @@ class DatabaseStorage(Storage):
 
     def get_user_org_group_id(self, usage_details):
 
-        if usage_details['payment_mode'] == PAYMENT_MODE_FREE_CALL:
+        if usage_details['payment_mode'] == PAYMENT_MODE_FREECALL_VALUE:
             user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_username(
                 usage_details['username'],
                 usage_details['organization_id'],
                 usage_details['service_id'],
                 usage_details['service_method']
             )
-        elif usage_details['user_address'] is None:
+        elif usage_details['payment_mode'] == PAYMENT_MODE_ESCROW_VALUE:
             user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_user_address(
                 usage_details['user_address'],
                 usage_details['organization_id'],
@@ -45,7 +45,7 @@ class DatabaseStorage(Storage):
                 usage_details['group_id']
             )
         else:
-            raise Exception('Unknown user request error')
+            raise Exception("Invalid payment mode")
 
         if user_org_group_id is not None:
             return user_org_group_id.id
@@ -101,7 +101,8 @@ class DatabaseStorage(Storage):
             user_name=usage_details["username"],
             service_id=usage_details["service_id"],
             resource=usage_details["service_method"],
-            request_id=usage_details["request_id"]
+            request_id=usage_details["request_id"],
+            payment_mode=usage_details["payment_mode"]
         )
         self.usage_repo.create_item(usage_record)
         logger.info(f"added usage data for {usage_details}")

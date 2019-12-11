@@ -36,6 +36,37 @@ package:
     - .gitignore
 
 functions:
+  verify-deamon:
+    handler: handlers/verify_handler.main
+    role: ${file(./config.${self:provider.stage}.json):ROLE}
+    vpc:
+      securityGroupIds:
+        - ${file(./config.${self:provider.stage}.json):SG1}
+        - ${file(./config.${self:provider.stage}.json):SG2}
+      subnetIds:
+        - ${file(./config.${self:provider.stage}.json):VPC1}
+        - ${file(./config.${self:provider.stage}.json):VPC2}
+    events:
+      - http:
+          path: /verify
+          method: get
+          authorizer:
+            type: request
+            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
+            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: verify_authorizer
+#            resultTtlInSeconds: 100
+          cors:
+            origin: ${self:custom.origin.${self:provider.stage}}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - x-requested-with
+
   get-freecalls:
     handler: handlers/freecall_handler.main
     role: ${file(./config.${self:provider.stage}.json):ROLE}
@@ -53,11 +84,12 @@ functions:
       - http:
           path: /usage/freecalls
           method: get
-          #          authorizer:
-          #            name: user-authorizer
-          #            type: COGNITO_USER_POOLS
-          #            arn: ${file(./config.${self:provider.stage}.json):AUTHORIZER}
-          #            identitySource: method.request.header.Authorization
+          authorizer:
+            type: request
+            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
+            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: freecall_authorizer
+#            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
@@ -89,6 +121,8 @@ functions:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
             identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: usage_authorizer
+#            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
