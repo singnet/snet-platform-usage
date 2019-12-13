@@ -82,7 +82,7 @@ functions:
     #    Check the event documentation for details
     events:
       - http:
-          path: /usage/freecalls
+          path: /pricing/usage
           method: get
           authorizer:
             type: request
