@@ -82,7 +82,7 @@ functions:
     #    Check the event documentation for details
     events:
       - http:
-          path: /pricing/usage
+          path: /usage/freecalls
           method: get
           authorizer:
             type: request
@@ -176,9 +176,14 @@ functions:
     #    Check the event documentation for details
     events:
       - http:
-          path: /usage
+          path: /pricing/usage
           method: get
-#            resultTtlInSeconds: 100
+          authorizer:
+            type: request
+            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
+            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: freecall_authorizer
+          #            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
