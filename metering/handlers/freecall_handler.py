@@ -1,47 +1,41 @@
-import json
-import logging
-
 from constants import StatusCode, StatusMessage, HEADER_POST_RESPONSE
 from services import UsageService
-from logger import setup_logger
-from utils import validate_request, make_response
+from logger import get_logger
+from utils import validate_request, generate_lambda_response
 
 usage_service = UsageService()
 
-setup_logger()
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 required_keys = ['organization_id', 'service_id']
 
 
 def main(event, context):
-    if validate_request(required_keys, event['queryStringParameters']):
-        try:
+    logger.info("Free call request received")
+    try:
+        if validate_request(required_keys, event['queryStringParameters']):
             org_id = event['queryStringParameters']['organization_id']
             service_id = event['queryStringParameters']['service_id']
             username = event['queryStringParameters']['username']
+
+            logger.info(f"Fetched values from request \n"
+                        f"username: {username} \n"
+                        f"org_id: {org_id} \n"
+                        f"service_id: {service_id} \n")
+
             free_call_details = usage_service.get_free_call_details(
                 username, org_id, service_id)
-            return_value = make_response(
-                status_code=StatusCode.SUCCESS_GET_CODE,
-                header=HEADER_POST_RESPONSE,
-                body=json.dumps(free_call_details)
-            )
+            response = free_call_details
+            status_code = StatusCode.SUCCESS_GET_CODE
+        else:
+            logger.error(f"Request validation failed")
+            logger.info(event)
+            response = StatusMessage.BAD_PARAMETER
+            status_code = StatusCode.BAD_PARAMETERS_CODE
+    except Exception as e:
+        logger.error("Failed to get free call details")
+        logger.info(event)
+        status_code = StatusCode.SERVER_ERROR_CODE,
+        response = StatusMessage.SERVER_ERROR_MSG
 
-        except Exception as e:
-            logger.error(e)
-            return_value = make_response(
-                status_code=StatusCode.SERVER_ERROR_CODE,
-                header=HEADER_POST_RESPONSE,
-                body=json.dumps({"error": StatusMessage.SERVER_ERROR_MSG})
-            )
-
-    else:
-        logger.error(f"Request validation failed for {event['queryStringParameters']}")
-        return_value = make_response(
-            status_code=StatusCode.BAD_PARAMETERS_CODE,
-            header=HEADER_POST_RESPONSE,
-            body=json.dumps({"error": StatusMessage.BAD_PARAMETER})
-        )
-
-    return return_value
+    return generate_lambda_response(status_code, response)
