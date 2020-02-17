@@ -111,12 +111,73 @@ functions:
       - http:
           path: /usage
           method: post
+          cors:
+            origin: ${self:custom.origin.${self:provider.stage}}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - x-requested-with
+  pricing-create-usage:
+    handler: handlers.usage_handler.main
+    role: ${file(./config.${self:provider.stage}.json):ROLE}
+    vpc:
+      securityGroupIds:
+        - ${file(./config.${self:provider.stage}.json):SG1}
+        - ${file(./config.${self:provider.stage}.json):SG2}
+      subnetIds:
+        - ${file(./config.${self:provider.stage}.json):VPC1}
+        - ${file(./config.${self:provider.stage}.json):VPC2}
+    #    The following are a few example events you can configure
+    #    NOTE: Please make sure to change your handler code to work with those events
+    #    Check the event documentation for details
+    events:
+      - http:
+          path: /pricing/usage
+          method: post
           authorizer:
             type: request
             arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
             identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
             name: usage_authorizer
 #            resultTtlInSeconds: 100
+          cors:
+            origin: ${self:custom.origin.${self:provider.stage}}
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - x-requested-with
+
+  get-usage:
+    handler: handlers/freecall_handler.main
+    role: ${file(./config.${self:provider.stage}.json):ROLE}
+    vpc:
+      securityGroupIds:
+        - ${file(./config.${self:provider.stage}.json):SG1}
+        - ${file(./config.${self:provider.stage}.json):SG2}
+      subnetIds:
+        - ${file(./config.${self:provider.stage}.json):VPC1}
+        - ${file(./config.${self:provider.stage}.json):VPC2}
+    #    The following are a few example events you can configure
+    #    NOTE: Please make sure to change your handler code to work with those events
+    #    Check the event documentation for details
+    events:
+      - http:
+          path: /pricing/usage
+          method: get
+          authorizer:
+            type: request
+            arn: ${file(./config.${self:provider.stage}.json):SIGN_AUTHORIZER}
+            identitySource: ${file(./config.${self:provider.stage}.json):SIGN_HEADERS}
+            name: freecall_authorizer
+          #            resultTtlInSeconds: 100
           cors:
             origin: ${self:custom.origin.${self:provider.stage}}
             headers:
