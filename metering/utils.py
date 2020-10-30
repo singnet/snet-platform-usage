@@ -46,3 +46,22 @@ def usage_record_add_verify_fields(usage_detail_dict):
         if (key not in usage_detail_dict) or (usage_detail_dict[key] == ""):
             usage_detail_dict[key] = None
     return usage_detail_dict
+
+
+def read_from_db(*decorator_args, **decorator_kwargs):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            if len(args) == 0:
+                raise Exception('should be used in class method')
+            func_self = args[0]
+            try:
+                data = func(*args, **kwargs)
+                func_self.session.commit()
+                return data
+            except:
+                func_self.session.rollback()
+                raise
+
+        return wrapper
+
+    return decorator
