@@ -1,6 +1,6 @@
-from constants import StatusCode
 import json
 
+from constants import StatusCode
 from utils import make_response
 
 

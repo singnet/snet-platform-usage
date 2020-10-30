@@ -3,13 +3,13 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.6-node
+      - image: circleci/python:3.7-node
       - image: circleci/mysql:8.0.16
         environment:
           MYSQL_ROOT_PASSWORD: rootpw
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: user
-          MYSQL_PASSWORD: passw0rd
+          MYSQL_DATABASE: unittest_db
+          MYSQL_USER: unittest_root
+          MYSQL_PASSWORD: unittest_pwd
     working_directory: ~/singnet
     environment:
       PYTHONPATH: ~/singnet/snet-platform-usage/metering
@@ -30,17 +30,13 @@ jobs:
           name: Initialise tables.
           command: |
             cd metering
-            cp tests/alembic.ini .
-            cp tests/test-settings.py settings.py
             sudo pip install alembic pymysql cryptography
             PYTHONPATH=$PWD
             alembic upgrade head
       - run:
-          name: Install dependencies & compile
+          name: Install dependencies
           command: |
             cd metering
-            python -m compileall *.py
-            python -m compileall */*.py
             sudo pip install -r requirements.txt
       - run:
           name: run tests for metering

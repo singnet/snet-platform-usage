@@ -1,39 +1,31 @@
-import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from settings import DB_URL
 
-engine = create_engine(DB_URL, echo=True)
+from config import DB_USER, DB_PWD, DB_HOST, DB_NAME, DB_DRIVER
+
+engine = create_engine(f"{DB_DRIVER}://{DB_USER}:{DB_PWD}@{DB_HOST}/{DB_NAME}")
 
 Session = sessionmaker(bind=engine)
 default_session = Session()
 
 
-class BaseRepository(object):
+class BaseRepository:
 
-    def get_default_session(self, session=None):
-        if not session:
-            return default_session
+    def __init__(self):
+        self.session = default_session
 
-        return session
+    def add_item(self, item):
+        try:
+            self.session.add(item)
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            raise e
 
-    def create_item(self, item, session=None):
-        session = self.get_default_session(session)
-        session.add(item)
-        session.commit()
-        session.flush()
-        return item
-
-    def create_all_items(self, items, session=None):
-        session = self.get_default_session(session)
-        session.add_all(items)
-        session.commit()
-        session.flush()
-        return items
-
-    def remove_item(self, item, session=None):
-        pass
-
-    def update_item(self, item, session=None):
-        pass
+    def add_all_items(self, items):
+        try:
+            self.session.add_all(items)
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            raise e

@@ -1,7 +1,5 @@
 import logging
 
-from constants import PAYMENT_MODE_FREECALL_VALUE
-
 
 def make_response(status_code, body, header=None):
     return {
@@ -36,12 +34,6 @@ def validator_usage():
     pass
 
 
-def is_free_call(usage_details_dict):
-    if usage_details_dict['payment_mode'] == PAYMENT_MODE_FREECALL_VALUE:
-        return True
-    return False
-
-
 def usage_record_add_verify_fields(usage_detail_dict):
     new_required_keys = {
         'usage_type', 'status', 'usage_value', 'start_time', 'end_time',
@@ -53,9 +45,4 @@ def usage_record_add_verify_fields(usage_detail_dict):
     for key in new_required_keys:
         if (key not in usage_detail_dict) or (usage_detail_dict[key] == ""):
             usage_detail_dict[key] = None
-
-    if usage_detail_dict['username'] is not None and usage_detail_dict['user_address'] is None:
-        usage_detail_dict['payment_mode'] = PAYMENT_MODE_FREECALL_VALUE
-    else:
-        usage_detail_dict['payment_mode'] = 'paid'
     return usage_detail_dict
