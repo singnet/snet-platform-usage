@@ -42,23 +42,3 @@ def main(event, context):
         )
 
     return response
-
-
-if __name__ == '__main__':
-    event = {
-        "body": json.dumps(
-            {'type': 'response', 'registry_address_key': '0xdce9c76ccb881af94f7fb4fac94e4acc584fa9a5',
-             'ethereum_json_rpc_endpoint': 'https://mainnet.infura.io/v3/09027f4a13e841d48dbfefc67e7685d5',
-             'request_id': 'budno82mjn88juddh8tg', 'organization_id': 'snet', 'service_id': 'example-service',
-             'group_id': 'EoFmN3nvaXpf6ew8jJbIPVghE5NXfYupFF7PkRmVyGQ=',
-             'service_method': '/example_service.Calculator/add', 'response_sent_time': '2020-10-30 02:36:16.516130074',
-             'request_received_time': '2020-10-30 02:36:16.169759062', 'response_time': '0.3464', 'response_code': 'OK',
-             'error_message': None, 'version': 'v4.0.0', 'client_type': None, 'user_details': None,
-             'user_agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36',
-             'channel_id': '5', 'username': None, 'operation': 'read', 'usage_type': 'apicall', 'status': 'success',
-             'start_time': '2020-10-30 02:36:16.169759062', 'end_time': '2020-10-30 02:36:16.516130074',
-             'usage_value': 1, 'time_zone': '', 'payment_mode': 'fr', 'user_address': None, 'resource': None,
-             'org_id': None, 'created_at': None}
-        )
-    }
-    main(event, None)
