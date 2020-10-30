@@ -1,11 +1,11 @@
 from models import OrgServiceConfigModel
 from repository.base_repository import BaseRepository
-from utils import read_from_db
+from utils import db_exception_handler
 
 
 class OrgServiceRepo(BaseRepository):
 
-    @read_from_db()
+    @db_exception_handler()
     def get_service_config(self, org_id, service_id, optin_time):
         if optin_time is not None:
             service_config = self.session.query(OrgServiceConfigModel.free_calls.label('free_calls')) \
