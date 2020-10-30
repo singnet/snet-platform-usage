@@ -48,7 +48,7 @@ def usage_record_add_verify_fields(usage_detail_dict):
     return usage_detail_dict
 
 
-def read_from_db(*decorator_args, **decorator_kwargs):
+def read_from_db():
     def decorator(func):
         def wrapper(*args, **kwargs):
             if len(args) == 0:
