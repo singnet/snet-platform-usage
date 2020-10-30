@@ -43,7 +43,6 @@ jobs:
           command: |
             cd metering
             sudo pip install coverage coveralls pytest
-            rm tests/__init__.py
             PYTHONPATH=$PWD coverage run -m pytest tests/test_total_calls.py
             coverage report -m
             mkdir ../test-reports
