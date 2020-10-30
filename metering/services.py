@@ -46,10 +46,7 @@ class APIUtilityService:
 
     def get_user_address(self, group_id, channel_id):
         lambda_payload = {
-            "httpMethod": "GET",
-            "requestContext": {"stage": CONTRACT_API_STAGE},
-            "path": f"/contract-api/group/{group_id}/channel/{channel_id}",
-            "pathParameters": {"group_id": group_id, "channel_id": channel_id},
+            "pathParameters": {"groupId": group_id, "channelId": channel_id},
         }
 
         try:
