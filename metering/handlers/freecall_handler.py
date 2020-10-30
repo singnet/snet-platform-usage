@@ -2,8 +2,8 @@ import json
 import logging
 
 from constants import StatusCode, StatusMessage, HEADER_POST_RESPONSE
-from services import UsageService
 from logger import setup_logger
+from services import UsageService
 from utils import validate_request, make_response
 
 usage_service = UsageService()
