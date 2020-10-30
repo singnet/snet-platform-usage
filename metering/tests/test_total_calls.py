@@ -78,14 +78,14 @@ class TestTotalCalls(unittest.TestCase):
                 "response_time": "0.5461",
                 "response_code": "Unavailable", "error_message": "",
                 "version": "v1.0.0", 'username': 'user@snet',
-                'payment_mode': "preapid-call", "operation": "read",
+                'payment_mode': "prepaid-call", "operation": "read",
                 "usage_type": "apicall", "status": "success",
                 "start_time": "2019-08-08 14:07:15.337318252",
                 "end_time": "2019-08-08 14:07:15.883501805", "usage_value": 1, "time_zone": "IST", "client_type": None,
                 "channel_id": 1, "user_details": None, "user_agent": None, "user_address": None
             })
             }, None)
-        self.assertEqual((1, 100), self.storage_service.get_usage_details(
+        self.assertEqual((2, 100), self.storage_service.get_usage_details(
             user_name='user@snet', org_id='snet', service_id='example-service'))
 
 
