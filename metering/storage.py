@@ -1,10 +1,10 @@
 import logging
 
+from config import PAYMENT_MODE_FREECALL_VALUE, PAID_PAYMENT_MODE
 from models import UserOrgGroupModel, UsageModel
 from repository.org_service_config_repository import OrgServiceRepo
 from repository.usage_repository import UsageRepository
 from repository.user_org_group_repository import UserOrgGroupRepository
-from constants import PAYMENT_MODE_FREECALL_VALUE, PAYMENT_MODE_ESCROW_VALUE
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class DatabaseStorage(Storage):
                 usage_details['service_id'],
                 usage_details['service_method']
             )
-        elif usage_details['payment_mode'] == PAYMENT_MODE_ESCROW_VALUE:
+        elif usage_details['payment_mode'] in PAID_PAYMENT_MODE:
             user_org_group_id = self.user_org_group_repo.get_user_org_group_id_by_user_address(
                 usage_details['user_address'],
                 usage_details['organization_id'],
@@ -46,9 +46,6 @@ class DatabaseStorage(Storage):
             )
         else:
             raise Exception("Invalid payment mode")
-
-        if user_org_group_id is not None:
-            return user_org_group_id.id
         return user_org_group_id
 
     def add_usage_data(self, usage_details):
@@ -70,7 +67,7 @@ class DatabaseStorage(Storage):
                 service_id=usage_details["service_id"],
                 resource=usage_details["service_method"]
             )
-            self.user_org_group_repo.create_item(new_user_org_record)
+            self.user_org_group_repo.add_item(new_user_org_record)
         logger.info(f"Added user org group data\ngroup_id: {usage_details['group_id']}, "
                     f"org_id: {usage_details['organization_id']}, "
                     f"user_name: {usage_details['username']}, "
@@ -102,9 +99,10 @@ class DatabaseStorage(Storage):
             service_id=usage_details["service_id"],
             resource=usage_details["service_method"],
             request_id=usage_details["request_id"],
-            payment_mode=usage_details["payment_mode"]
+            payment_mode=usage_details["payment_mode"],
+            user_address=usage_details["user_address"]
         )
-        self.usage_repo.create_item(usage_record)
+        self.usage_repo.add_item(usage_record)
         logger.info(f"added usage data for {usage_details}")
 
     def get_usage_details(self, user_name, org_id, service_id, group_id=None):
