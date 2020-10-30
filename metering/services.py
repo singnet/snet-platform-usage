@@ -42,13 +42,10 @@ class UsageService(object):
 
 class APIUtilityService:
 
-    def __init__(self):
-        self.lambda_client = boto3.client('lambda')
-
     def get_user_address(self, group_id, channel_id):
         lambda_payload = {"pathParameters": {"groupId": group_id, "channelId": channel_id}}
         try:
-            response_raw = self.lambda_client.invoke(
+            response_raw = boto3.client('lambda').invoke(
                 FunctionName=CONTRACT_API_ARN, Payload=json.dumps(lambda_payload))
             response = json.loads(response_raw.get('Payload').read())
             response_body = json.loads(response['body'])

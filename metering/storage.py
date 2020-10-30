@@ -46,9 +46,6 @@ class DatabaseStorage(Storage):
             )
         else:
             raise Exception("Invalid payment mode")
-
-        if user_org_group_id is not None:
-            return user_org_group_id.id
         return user_org_group_id
 
     def add_usage_data(self, usage_details):
@@ -102,7 +99,8 @@ class DatabaseStorage(Storage):
             service_id=usage_details["service_id"],
             resource=usage_details["service_method"],
             request_id=usage_details["request_id"],
-            payment_mode=usage_details["payment_mode"]
+            payment_mode=usage_details["payment_mode"],
+            user_address=usage_details["user_address"]
         )
         self.usage_repo.add_item(usage_record)
         logger.info(f"added usage data for {usage_details}")

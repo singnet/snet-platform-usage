@@ -17,10 +17,6 @@ class TestTotalCalls(unittest.TestCase):
         self.usage_repository = UsageRepository()
         self.user_org_group_repository = UserOrgGroupRepository()
         self.storage_service = DatabaseStorage()
-        self.org_service_repository.session.query(
-            OrgServiceConfigModel).delete()
-        self.org_service_repository.session.query(UsageModel).delete()
-        self.org_service_repository.session.query(UserOrgGroupModel).delete()
         service_items = list()
         service_items.append(
             OrgServiceConfigModel(
@@ -32,11 +28,6 @@ class TestTotalCalls(unittest.TestCase):
             )
         )
         self.org_service_repository.add_all_items(service_items)
-
-    def test_free_calls(self):
-        self.assertEqual((0, 100), self.storage_service.get_usage_details(
-            user_name='user@snet', org_id='snet', service_id='example-service'))
-        self.org_service_repository.session.query(UsageModel).delete()
 
     @patch("services.APIUtilityService.get_user_address", return_value="0x123")
     def test_paid_usage_record(self, boto_mock):
@@ -54,7 +45,7 @@ class TestTotalCalls(unittest.TestCase):
                 "request_received_time": "2019-08-08 14:07:15.337318252",
                 "response_time": "0.5461",
                 "response_code": "Unavailable", "error_message": "",
-                "version": "v1.0.0", 'username': 'user@snet',
+                "version": "v1.0.0", 'username': None,
                 'payment_mode': "escrow", "operation": "read",
                 "usage_type": "apicall", "status": "success",
                 "start_time": "2019-08-08 14:07:15.337318252",
@@ -77,7 +68,7 @@ class TestTotalCalls(unittest.TestCase):
                 "request_received_time": "2019-08-08 14:07:15.337318252",
                 "response_time": "0.5461",
                 "response_code": "Unavailable", "error_message": "",
-                "version": "v1.0.0", 'username': 'user@snet',
+                "version": "v1.0.0", 'username': None,
                 'payment_mode': "prepaid-call", "operation": "read",
                 "usage_type": "apicall", "status": "success",
                 "start_time": "2019-08-08 14:07:15.337318252",
@@ -85,11 +76,12 @@ class TestTotalCalls(unittest.TestCase):
                 "channel_id": 1, "user_details": None, "user_agent": None, "user_address": None
             })
             }, None)
-        self.assertEqual((2, 100), self.storage_service.get_usage_details(
-            user_name='user@snet', org_id='snet', service_id='example-service'))
+        usage_details = self.usage_repository.session.query(UsageModel).filter(UsageModel.user_address=="0x123").all()
+        if len(usage_details) != 2:
+            assert False
 
-
-    def test_success_usage_record(self):
+    @patch("services.APIUtilityService.get_user_address", return_value="0x123")
+    def test_success_usage_record(self, mock_boto):
         self.storage_service.add_usage_data({
             "type": "response",
             "registry_address_key": "0x5156fde2ca71da4398f8c76763c41bc9633875e4",
@@ -159,3 +151,4 @@ class TestTotalCalls(unittest.TestCase):
             OrgServiceConfigModel).delete()
         self.org_service_repository.session.query(UsageModel).delete()
         self.org_service_repository.session.query(UserOrgGroupModel).delete()
+        self.org_service_repository.session.commit()
