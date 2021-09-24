@@ -47,9 +47,8 @@ jobs:
           command: |
             cd metering
             sudo pip install coverage coveralls pytest
-            PYTHONPATH=$PWD python -m coverage run -m pytest tests/test_total_calls.py
-            python -m coverage report -m
-            python -m coverage xml
+            PYTHONPATH=$PWD python -m coverage run --omit=*__init__.py,config.py  -m pytest tests/test_total_calls.py
+            python -m coverage xml --omit=*__init__.py,config.py
             export SONAR_SCANNER_OPTS="-Xmx2048m"
             sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner -Dsonar.host.url=https://sonarqube.singularitynet.io -Dsonar.login=${SONAR_TOKEN} $SONAR_SCANNER_OPTS_CUSTOM
             #COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN} python -m coveralls
