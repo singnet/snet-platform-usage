@@ -1,6 +1,8 @@
 plugins:
   - serverless-offline
   - serverless-python-requirements
+  - serverless-plugin-tracing
+  - serverless-prune-plugin
 
 service: metering
 
@@ -17,10 +19,19 @@ provider:
     tags: # Tags that will be added to each of the deployment resources
       key1: metering
   deploymentPrefix: serverless # The S3 prefix under which deployed artifacts should be stored. Default is serverless
+  tracing: true
 
 custom:
   pythonRequirements:
+    fileName: metering/requirements.txt
     dockerizePip: true
+    useDownloadCache: true
+    useStaticCache: true
+    cacheLocation: '/var/cache/serverless'
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 2
   stages:
     - dev
     - ropsten
