@@ -23,7 +23,7 @@ provider:
 
 custom:
   pythonRequirements:
-    fileName: metering/requirements.txt
+    fileName: requirements.txt
     dockerizePip: true
     useDownloadCache: true
     useStaticCache: true
